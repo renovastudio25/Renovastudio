@@ -1,0 +1,1 @@
+Upload this ZIP to Netlify to update the site. Main hero photo is the garden gazebo image.

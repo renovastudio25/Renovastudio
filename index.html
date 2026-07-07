@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReNova Studio | Renovation & Refurbishment in London</title>
+<meta name="description" content="ReNova Studio provides renovation and refurbishment services in London: kitchens, bathrooms, garden rooms, flooring, tiling, carpentry, decorating, plumbing and electrical work.">
+<style>
+:root{
+  --black:#050505;
+  --dark:#080808;
+  --gold:#d7aa42;
+  --gold2:#f3d37b;
+  --cream:#f7f2e8;
+  --white:#fff;
+  --text:#202020;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--black);color:var(--white);line-height:1.65}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+.header{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 5%;
+  background:rgba(0,0,0,.86);
+  border-bottom:1px solid rgba(215,170,66,.35);
+  backdrop-filter:blur(14px);
+}
+.brand{
+  display:flex;align-items:center;gap:12px;
+}
+.brand-mark{
+  width:42px;height:50px;border:3px solid var(--gold);
+  clip-path:polygon(0 30%,62% 0,62% 32%,100% 52%,100% 100%,0 100%);
+}
+.brand-text strong{
+  display:block;font-family:Georgia,serif;color:var(--gold);font-size:31px;line-height:1;
+}
+.brand-text span{
+  display:block;letter-spacing:7px;color:var(--gold2);font-size:11px;margin-top:4px;
+}
+.nav{display:flex;gap:28px;text-transform:uppercase;font-size:13px;letter-spacing:1px}
+.nav a:hover{color:var(--gold)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:13px 22px;border:1px solid var(--gold);
+  text-transform:uppercase;font-weight:800;font-size:13px;letter-spacing:.6px;
+}
+.btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#070707}
+.btn.dark{background:rgba(0,0,0,.22);color:#fff}
+.btn.dark:hover{background:#fff;color:#111;border-color:#fff}
+.hero{
+  min-height:100vh;
+  position:relative;
+  display:flex;align-items:center;
+  padding:145px 5% 90px;
+  background:
+    linear-gradient(90deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.74) 36%,rgba(0,0,0,.38) 72%,rgba(0,0,0,.2) 100%),
+    url('assets/hero-garden.png') center/cover no-repeat;
+}
+.hero::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:150px;
+  background:linear-gradient(transparent,var(--black));
+}
+.hero-content{position:relative;z-index:2;max-width:710px}
+.eyebrow{color:var(--gold);text-transform:uppercase;letter-spacing:2.4px;font-size:13px;font-weight:800;margin-bottom:15px}
+h1{font-family:Georgia,serif;font-size:clamp(43px,6vw,86px);line-height:1.03;margin-bottom:24px;letter-spacing:-1.5px}
+h1 span{color:var(--gold)}
+.lead{font-size:clamp(18px,2vw,22px);color:#eee;max-width:640px;margin-bottom:32px}
+.actions{display:flex;gap:14px;flex-wrap:wrap}
+.feature-bar{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:#080808;border-top:1px solid rgba(215,170,66,.35);border-bottom:1px solid rgba(215,170,66,.35)
+}
+.feature-bar div{padding:28px 5%;border-right:1px solid rgba(215,170,66,.2)}
+.feature-bar strong{display:block;color:var(--gold);font-family:Georgia,serif;font-size:24px}
+.feature-bar span{color:#ddd;font-size:14px}
+.section{padding:82px 5%}
+.light{background:var(--cream);color:var(--text)}
+.dark{background:#080808;color:#fff}
+.title{text-align:center;max-width:780px;margin:0 auto 45px}
+.title h2{font-family:Georgia,serif;font-size:clamp(36px,4vw,56px);line-height:1.1;margin-top:8px}
+.title p:last-child{color:#666;margin-top:12px}
+.dark .title p:last-child{color:#ccc}
+.services{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.service{background:#fff;border:1px solid rgba(215,170,66,.45);padding:28px;min-height:190px}
+.service h3{font-family:Georgia,serif;font-size:22px;margin-bottom:10px}
+.service p{color:#555}
+.portfolio{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:#111;border:1px solid rgba(215,170,66,.45);overflow:hidden}
+.card img{width:100%;height:320px;object-fit:cover}
+.card h3{color:var(--gold);font-family:Georgia,serif;font-size:24px;padding:16px 18px 4px}
+.card p{color:#ddd;padding:0 18px 20px}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
+.about h2,.contact h2{font-family:Georgia,serif;font-size:clamp(36px,4vw,56px);line-height:1.1;margin-bottom:18px}
+.about p{color:#444;font-size:18px}
+.points{display:grid;gap:16px}
+.point{background:#fff;border:1px solid rgba(215,170,66,.45);padding:24px}
+.point strong{color:var(--gold);font-family:Georgia,serif;font-size:34px}
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:50px;background:#080808;color:#fff}
+.contact a{color:var(--gold)}
+.contact-copy>p{color:#ddd}
+.lines{margin-top:25px}
+.lines p{margin:12px 0}
+form{display:grid;gap:14px;background:#101010;padding:28px;border:1px solid rgba(215,170,66,.45)}
+input,select,textarea{width:100%;padding:15px;background:#080808;color:#fff;border:1px solid rgba(215,170,66,.45);font:inherit}
+button{border:0;cursor:pointer}
+.whatsapp{position:fixed;right:18px;bottom:18px;background:#25d366;color:#06140a;padding:14px 18px;border-radius:999px;font-weight:900;z-index:100;box-shadow:0 15px 35px rgba(0,0,0,.35)}
+footer{text-align:center;color:var(--gold);padding:25px;background:#030303}
+@media(max-width:1000px){
+  .nav{display:none}
+  .services,.portfolio,.feature-bar,.about,.contact{grid-template-columns:1fr 1fr}
+}
+@media(max-width:650px){
+  .header{padding:10px 4%}
+  .brand-mark{width:32px;height:38px}
+  .brand-text strong{font-size:24px}
+  .brand-text span{font-size:9px;letter-spacing:5px}
+  .header .btn{display:none}
+  .hero{min-height:780px;background-position:center;padding-top:125px}
+  .services,.portfolio,.feature-bar,.about,.contact{grid-template-columns:1fr}
+  .section{padding:62px 5%}
+  .card img{height:300px}
+}
+</style>
+</head>
+<body>
+<a class="whatsapp" href="https://wa.me/447842722366" target="_blank">WhatsApp</a>
+
+<header class="header">
+  <a href="#home" class="brand">
+    <span class="brand-mark"></span>
+    <span class="brand-text"><strong>ReNova</strong><span>STUDIO</span></span>
+  </a>
+  <nav class="nav">
+    <a href="#home">Home</a><a href="#services">Services</a><a href="#portfolio">Portfolio</a><a href="#about">About</a><a href="#contact">Contact</a>
+  </nav>
+  <a class="btn gold" href="#contact">Free Quote</a>
+</header>
+
+<main id="home">
+<section class="hero">
+  <div class="hero-content">
+    <p class="eyebrow">Premium Renovation Specialists in London</p>
+    <h1>Renovate. Transform. <span>Enjoy.</span></h1>
+    <p class="lead">ReNova Studio delivers high-quality renovation, garden rooms, kitchens, bathrooms, flooring, carpentry and complete refurbishment work across London.</p>
+    <div class="actions">
+      <a class="btn gold" href="#contact">Request a Free Quote</a>
+      <a class="btn dark" href="#portfolio">View Projects</a>
+    </div>
+  </div>
+</section>
+
+<section class="feature-bar">
+  <div><strong>Design & Planning</strong><span>We help shape the perfect space for your lifestyle.</span></div>
+  <div><strong>Build & Renovate</strong><span>High quality workmanship from start to finish.</span></div>
+  <div><strong>Finish & Detail</strong><span>Premium finishes and attention to every detail.</span></div>
+  <div><strong>Reliable Team</strong><span>Clear communication and trusted project delivery.</span></div>
+</section>
+
+<section id="services" class="section light">
+  <div class="title"><p class="eyebrow">What We Do</p><h2>Our Services</h2><p>Professional renovation work for homes, flats, commercial spaces and outdoor projects.</p></div>
+  <div class="services">
+    <article class="service"><h3>Complete Renovations</h3><p>Full property renovation and refurbishment from start to finish.</p></article>
+    <article class="service"><h3>Garden Rooms</h3><p>Outdoor gazebos, garden rooms, covered areas and exterior improvement projects.</p></article>
+    <article class="service"><h3>Kitchen Renovations</h3><p>Modern kitchens, fitted units, worktops, lighting and premium finishes.</p></article>
+    <article class="service"><h3>Bathroom Renovations</h3><p>Bathroom installation, shower areas, tiling and plumbing finish.</p></article>
+    <article class="service"><h3>Flooring</h3><p>Herringbone, laminate, hardwood, vinyl and professional floor installation.</p></article>
+    <article class="service"><h3>Tiling</h3><p>Wall and floor tiling with accurate alignment and clean details.</p></article>
+    <article class="service"><h3>Painting & Decorating</h3><p>Interior decorating, wallpaper and refined finishing work.</p></article>
+    <article class="service"><h3>Carpentry & Joinery</h3><p>Staircases, feature walls, shelving and bespoke woodwork.</p></article>
+  </div>
+</section>
+
+<section id="portfolio" class="section dark">
+  <div class="title"><p class="eyebrow">Selected Projects</p><h2>Our Recent Work</h2><p>Real project photos from ReNova Studio renovation and finishing work.</p></div>
+  <div class="portfolio">
+    <article class="card"><img src="assets/hero-garden.png" alt="Garden Room & Outdoor BBQ Area"><h3>Garden Room & Outdoor BBQ Area</h3><p>Timber garden gazebo with covered seating, brick BBQ/fireplace and warm outdoor lighting.</p></article>
+<article class="card"><img src="assets/open-plan-kitchen.jpg" alt="Open Plan Kitchen Renovation"><h3>Open Plan Kitchen Renovation</h3><p>Kitchen refurbishment with herringbone flooring, worktops, lighting and modern fitted units.</p></article>
+<article class="card"><img src="assets/kitchen-grey.jpg" alt="Compact Kitchen & Herringbone Flooring"><h3>Compact Kitchen & Herringbone Flooring</h3><p>Grey kitchen units, bright ceiling lights and clean flooring finish.</p></article>
+<article class="card"><img src="assets/bathroom.jpg" alt="Bathroom Renovation"><h3>Bathroom Renovation</h3><p>Shower enclosure, marble-style tiles, vanity unit, toilet and plumbing finish.</p></article>
+<article class="card"><img src="assets/staircase.jpg" alt="Staircase & Feature Wall"><h3>Staircase & Feature Wall</h3><p>Wood staircase finish with vertical slat feature wall and carpentry detailing.</p></article>
+<article class="card"><img src="assets/loft-floor.jpg" alt="Loft Room Flooring"><h3>Loft Room Flooring</h3><p>Loft room finish with herringbone flooring, internal doors and skirting.</p></article>
+<article class="card"><img src="assets/wood-floor.jpg" alt="Wood Floor Restoration"><h3>Wood Floor Restoration</h3><p>Sanded and finished natural wooden flooring with glossy protective finish.</p></article>
+<article class="card"><img src="assets/kitchen-worktop.jpg" alt="Kitchen Worktops & Tiling"><h3>Kitchen Worktops & Tiling</h3><p>Kitchen units, timber worktops, patterned backsplash tiles and appliance installation.</p></article>
+<article class="card"><img src="assets/decorating.jpg" alt="Painting, Decorating & Shelving"><h3>Painting, Decorating & Shelving</h3><p>Interior decorating with green built-in shelving and wallpaper finish.</p></article>
+<article class="card"><img src="assets/tiling-progress.jpg" alt="Bathroom Tiling in Progress"><h3>Bathroom Tiling in Progress</h3><p>Wall tiling installation with levelling clips and marble-effect tiles.</p></article>
+  </div>
+</section>
+
+<section id="about" class="section light about">
+  <div>
+    <p class="eyebrow">About ReNova Studio</p>
+    <h2>Designed to Look Beautiful. Built to Last.</h2>
+    <p>We help homeowners and businesses transform their spaces with reliable renovation services, clean project management and a high-end finish. Every project is handled with attention to detail, from the first conversation to the final handover.</p>
+  </div>
+  <div class="points">
+    <article class="point"><strong>01</strong><h3>Clear Communication</h3><p>You stay informed through every stage of the project.</p></article>
+    <article class="point"><strong>02</strong><h3>Professional Finish</h3><p>We focus on neat, durable and visually refined results.</p></article>
+    <article class="point"><strong>03</strong><h3>Trusted Team</h3><p>Experienced trades for renovation, carpentry, plumbing and electrical works.</p></article>
+  </div>
+</section>
+
+<section id="contact" class="section contact">
+  <div class="contact-copy">
+    <p class="eyebrow">Get in Touch</p>
+    <h2>Request a Free Quote</h2>
+    <p>Ready to start your renovation project? Contact ReNova Studio and tell us what you would like to transform.</p>
+    <div class="lines">
+      <p><strong>Project Manager / WhatsApp:</strong> <a href="tel:+447842722366">+44 7842 722366</a></p>
+      <p><strong>Administrator:</strong> <a href="tel:+447432712358">+44 7432 712358</a></p>
+      <p><strong>Email:</strong> <a href="mailto:Renovastudio25@gmail.com">Renovastudio25@gmail.com</a></p>
+      <p><strong>Address:</strong> 60 Stokes Road, E6 3SB, London, United Kingdom</p>
+    </div>
+  </div>
+  <form action="mailto:Renovastudio25@gmail.com" method="post" enctype="text/plain">
+    <input name="Name" placeholder="Your Name" required>
+    <input name="Phone" placeholder="Your Phone" required>
+    <input name="Email" type="email" placeholder="Your Email">
+    <select name="Service">
+      <option>Garden Room / Outdoor Project</option><option>Complete Renovation</option><option>Kitchen Renovation</option><option>Bathroom Renovation</option><option>Flooring</option><option>Tiling</option><option>Painting & Decorating</option><option>Carpentry & Joinery</option><option>Other</option>
+    </select>
+    <textarea name="Message" rows="5" placeholder="Tell us about your project" required></textarea>
+    <button class="btn gold" type="submit">Send Enquiry</button>
+  </form>
+</section>
+</main>
+
+<footer>© 2025 ReNova Studio. All Rights Reserved.</footer>
+</body>
+</html>
