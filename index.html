@@ -132,6 +132,30 @@ footer{text-align:center;color:var(--gold);padding:25px;background:#030303}
   <div class="title"><p class="eyebrow">Client Reviews</p><h2>What Clients Say</h2><p>Feedback from renovation and refurbishment projects.</p></div>
   <div class="testimonial-grid"></div>
 </section>
+
+<section id="leave-review" class="section light">
+  <div class="title">
+    <p class="eyebrow">Leave a Review</p>
+    <h2>Share Your Experience</h2>
+    <p>Your review will be checked by ReNova Studio before it appears on the website.</p>
+  </div>
+  <form id="reviewForm">
+    <input name="reviewName" placeholder="Your Name" required>
+    <select name="reviewRating" required>
+      <option value="5">★★★★★ 5 Stars</option>
+      <option value="4">★★★★☆ 4 Stars</option>
+      <option value="3">★★★☆☆ 3 Stars</option>
+      <option value="2">★★☆☆☆ 2 Stars</option>
+      <option value="1">★☆☆☆☆ 1 Star</option>
+    </select>
+    <input name="reviewProject" placeholder="Project / Service, optional">
+    <input name="reviewDate" type="date">
+    <textarea name="reviewText" rows="5" placeholder="Write your review" required></textarea>
+    <button class="btn gold" type="submit">Submit Review</button>
+    <p class="form-status" id="reviewStatus"></p>
+  </form>
+</section>
+
 <section id="about" class="section light about">
   <div><p class="eyebrow">About ReNova Studio</p><h2>Designed to Look Beautiful. Built to Last.</h2><p>We help homeowners and businesses transform their spaces with reliable renovation services, clean project management and a high-end finish. Every project is handled with attention to detail, from the first conversation to the final handover.</p></div>
   <div class="points"><article class="point"><strong>01</strong><h3>Clear Communication</h3><p>You stay informed through every stage of the project.</p></article><article class="point"><strong>02</strong><h3>Professional Finish</h3><p>We focus on neat, durable and visually refined results.</p></article><article class="point"><strong>03</strong><h3>Trusted Team</h3><p>Experienced trades for renovation, carpentry, plumbing and electrical works.</p></article></div>
@@ -144,6 +168,8 @@ footer{text-align:center;color:var(--gold);padding:25px;background:#030303}
   <form id="quoteForm">
     <input name="name" placeholder="Your Name" required><input name="phone" placeholder="Your Phone" required><input name="email" type="email" placeholder="Your Email">
     <select name="service"><option>Garden Room / Outdoor Project</option><option>Complete Renovation</option><option>Kitchen Renovation</option><option>Bathroom Renovation</option><option>Flooring</option><option>Tiling</option><option>Painting & Decorating</option><option>Carpentry & Joinery</option><option>Other</option></select>
+    <input name="preferredDate" type="date" placeholder="Preferred Date">
+    <input name="preferredTime" type="time" placeholder="Preferred Time">
     <textarea name="message" rows="5" placeholder="Tell us about your project" required></textarea><button class="btn gold" type="submit">Send Enquiry</button><p class="form-status" id="formStatus"></p>
   </form>
 </section>
@@ -186,11 +212,45 @@ function ytEmbed(url){const m=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)
 window.openProjectModal=function(i){const p=allProjects[i];if(!p)return;const gallery=[p.imageUrl].concat(p.galleryUrls||[]).filter(Boolean);let html=`<h2>${p.title}</h2><p>${p.description||""}</p>${p.category?`<p><strong>Category:</strong> ${p.category}</p>`:""}<div class="gallery">${gallery.map(u=>`<img src="${u}" alt="">`).join("")}${(p.videoUrls||[]).map(u=>`<video controls src="${u}"></video>`).join("")}${(p.youtubeUrls||[]).map(u=>`<iframe src="${ytEmbed(u)}" frameborder="0" allowfullscreen></iframe>`).join("")}</div>`;if(p.beforeUrl||p.afterUrl)html+=`<div class="before-after">${p.beforeUrl?`<div class="ba-card"><span>Before</span><img src="${p.beforeUrl}"></div>`:""}${p.afterUrl?`<div class="ba-card"><span>After</span><img src="${p.afterUrl}"></div>`:""}</div>`;document.getElementById("modalContent").innerHTML=html;document.getElementById("projectModal").style.display="block";}
 window.closeProjectModal=()=>document.getElementById("projectModal").style.display="none";
 async function loadFromAdmin(){try{const s=await getDoc(doc(db,"site","homepage"));if(s.exists()){const d=s.data();setText(".hero .eyebrow",d.heroEyebrow);setText(".hero h1",d.heroTitle||d.title);setText(".hero .lead",d.heroText||d.text);setText("#services .title h2",d.servicesTitle);setText("#services .title p:last-child",d.servicesIntro);setText("#portfolio .title h2",d.portfolioTitle);setText("#portfolio .title p:last-child",d.portfolioIntro);setText("#about h2",d.aboutTitle);setText("#about > div:first-child > p:last-child",d.aboutText);setText("#contact h2",d.contactTitle);setText(".contact-copy > p:nth-of-type(2)",d.contactText);setLink(".lines p:nth-child(1) a",d.managerPhone,"tel:");setLink(".lines p:nth-child(2) a",d.adminPhone,"tel:");setEmail(".lines p:nth-child(3) a",d.contactEmail);if(d.address){const a=document.querySelector(".lines p:nth-child(4)");if(a)a.innerHTML="<strong>Address:</strong> "+d.address;}if(d.managerPhone){const wa=document.querySelector(".whatsapp");if(wa)wa.href="https://wa.me/"+d.managerPhone.replace(/[^0-9]/g,"");}setHeroImage(d.heroImageUrl||d.imageUrl);}
-const ps=await getDocs(query(collection(db,"projects"),orderBy("order","asc")));const dyn=[];ps.forEach(x=>{const p=x.data();if(p.title&&p.imageUrl&&p.deleted!==true)dyn.push(p);});allProjects=dyn.length?dyn:staticProjects;renderPortfolio(allProjects);
+const ps=await getDocs(query(collection(db,"projects"),orderBy("order","asc")));const dyn=[];ps.forEach(x=>{const p=x.data();if(p.title&&p.imageUrl&&p.deleted!==true)dyn.push(p);});allProjects=dyn.concat(staticProjects);renderPortfolio(allProjects);
 const ts=await getDocs(query(collection(db,"team"),orderBy("order","asc")));const team=[];ts.forEach(x=>{const t=x.data();if(t.name&&t.photoUrl)team.push(t);});renderTeam(team);
 const rs=await getDocs(query(collection(db,"testimonials"),orderBy("order","asc")));const rev=[];rs.forEach(x=>{const r=x.data();if(r.name&&r.text)rev.push(r);});renderTestimonials(rev);
+
+const approvedReviewSnap = await getDocs(query(collection(db,"customerReviews"),orderBy("createdAt","desc")));
+const approvedReviews = [];
+approvedReviewSnap.forEach(x=>{
+  const r=x.data();
+  if(r.status==="approved" && r.name && r.text) approvedReviews.push(r);
+});
+if(approvedReviews.length){
+  renderTestimonials(approvedReviews);
+}
+const approvedCustomerReviewsLoaded = true;
+
 }catch(e){console.log(e);allProjects=staticProjects;renderPortfolio(allProjects);}}
-document.getElementById("quoteForm").addEventListener("submit",async(e)=>{e.preventDefault();const f=e.target;try{await addDoc(collection(db,"quotes"),{name:f.name.value,phone:f.phone.value,email:f.email.value,service:f.service.value,message:f.message.value,createdAt:serverTimestamp(),status:"new"});document.getElementById("formStatus").innerText="Thank you. Your request has been sent.";f.reset();}catch(err){document.getElementById("formStatus").innerText="Send failed. Please contact us by WhatsApp.";console.log(err);}});
+document.getElementById("quoteForm").addEventListener("submit",async(e)=>{e.preventDefault();const f=e.target;try{await addDoc(collection(db,"quotes"),{name:f.name.value,phone:f.phone.value,email:f.email.value,service:f.service.value,message:f.message.value,preferredDate:f.preferredDate?.value || "",preferredTime:f.preferredTime?.value || "",createdAt:serverTimestamp(),status:"new"});document.getElementById("formStatus").innerText="Thank you. Your request has been sent.";f.reset();}catch(err){document.getElementById("formStatus").innerText="Send failed. Please contact us by WhatsApp.";console.log(err);}});
+
+document.getElementById("reviewForm")?.addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const f = e.target;
+  try{
+    await addDoc(collection(db,"customerReviews"),{
+      name:f.reviewName.value,
+      rating:Number(f.reviewRating.value || 5),
+      project:f.reviewProject.value,
+      completedDate:f.reviewDate.value,
+      text:f.reviewText.value,
+      status:"pending",
+      createdAt:serverTimestamp()
+    });
+    document.getElementById("reviewStatus").innerText = "Thank you. Your review was submitted for approval.";
+    f.reset();
+  }catch(err){
+    document.getElementById("reviewStatus").innerText = "Review failed. Please try again later.";
+    console.log(err);
+  }
+});
+
 loadFromAdmin();
 </script>
 </body>
