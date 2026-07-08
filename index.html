@@ -83,12 +83,123 @@ footer{text-align:center;color:var(--gold);padding:25px;background:#030303}
 .form-status{color:var(--gold);font-weight:bold}
 @media(max-width:1000px){.nav{display:none}.services,.portfolio,.feature-bar,.about,.contact,.team-grid,.testimonial-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:650px){.header{padding:10px 4%}.brand-mark{width:32px;height:38px}.brand-text strong{font-size:24px}.brand-text span{font-size:9px;letter-spacing:5px}.header .btn{display:none}.hero{min-height:780px;background-position:center;padding-top:125px}.services,.portfolio,.feature-bar,.about,.contact,.gallery,.before-after,.team-grid,.testimonial-grid{grid-template-columns:1fr}.section{padding:62px 5%}.card img,.team-card img{height:300px}.whatsapp{padding:11px 14px;font-size:13px;right:10px;bottom:10px}}
+
+.menu-toggle{
+  display:none;
+  background:var(--gold);
+  color:#000;
+  border-radius:8px;
+  width:44px;
+  height:40px;
+  font-size:24px;
+  font-weight:bold;
+}
+.filter-bar{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  margin:-20px auto 35px;
+}
+.filter-btn{
+  width:auto;
+  padding:10px 16px;
+  border:1px solid var(--gold);
+  background:#111;
+  color:var(--gold);
+  border-radius:999px;
+  font-weight:800;
+}
+.filter-btn.active,
+.filter-btn:hover{
+  background:var(--gold);
+  color:#050505;
+}
+.featured-project{
+  display:none;
+  background:#111;
+  border:1px solid rgba(215,170,66,.55);
+  margin:0 5% 60px;
+  grid-template-columns:1.1fr .9fr;
+  gap:0;
+  overflow:hidden;
+}
+.featured-project img{
+  width:100%;
+  height:430px;
+  object-fit:cover;
+}
+.featured-copy{
+  padding:44px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.featured-copy h2{
+  font-family:Georgia,serif;
+  color:var(--gold);
+  font-size:42px;
+  line-height:1.1;
+  margin-bottom:15px;
+}
+.lightbox{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.92);
+  z-index:1200;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.lightbox img{
+  max-width:94vw;
+  max-height:90vh;
+  object-fit:contain;
+  border:1px solid rgba(215,170,66,.55);
+}
+.lightbox button{
+  position:absolute;
+  right:18px;
+  top:18px;
+  width:42px;
+  height:42px;
+  background:var(--gold);
+  color:#000;
+  border-radius:50%;
+  font-size:24px;
+  font-weight:bold;
+}
+@media(max-width:1000px){
+  .menu-toggle{display:block}
+  .nav{
+    position:absolute;
+    top:74px;
+    left:0;
+    right:0;
+    display:none;
+    flex-direction:column;
+    background:#050505;
+    padding:18px 5%;
+    border-bottom:1px solid rgba(215,170,66,.35);
+  }
+  .nav.open{display:flex}
+  .featured-project{grid-template-columns:1fr}
+}
+@media(max-width:650px){
+  .featured-project{margin:0 5% 40px}
+  .featured-project img{height:290px}
+  .featured-copy{padding:26px}
+  .featured-copy h2{font-size:32px}
+}
+
 </style>
 </head>
 <body>
 <a class="whatsapp" href="https://wa.me/447842722366" target="_blank">WhatsApp</a>
 <header class="header">
   <a href="#home" class="brand"><span class="brand-mark"></span><span class="brand-text"><strong>ReNova</strong><span>STUDIO</span></span></a>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
   <nav class="nav"><a href="#home">Home</a><a href="#services">Services</a><a href="#portfolio">Portfolio</a><a href="#team">Team</a><a href="#testimonials">Reviews</a><a href="#contact">Contact</a></nav>
   <a class="btn gold" href="#contact">Free Quote</a>
 </header>
@@ -120,8 +231,10 @@ footer{text-align:center;color:var(--gold);padding:25px;background:#030303}
     <article class="service"><h3>Carpentry & Joinery</h3><p>Staircases, feature walls, shelving and bespoke woodwork.</p></article>
   </div>
 </section>
+<section id="featuredProject" class="featured-project"></section>
 <section id="portfolio" class="section dark">
   <div class="title"><p class="eyebrow">Selected Projects</p><h2>Our Recent Work</h2><p>Real project photos from ReNova Studio renovation and finishing work.</p></div>
+  <div class="filter-bar" id="portfolioFilters"></div>
   <div class="portfolio"></div>
 </section>
 <section id="team" class="section light">
@@ -175,6 +288,7 @@ footer{text-align:center;color:var(--gold);padding:25px;background:#030303}
 </section>
 </main>
 <footer>© 2025 ReNova Studio. All Rights Reserved.</footer>
+<div class="lightbox" id="lightbox" onclick="closeLightbox()"><button onclick="closeLightbox()">×</button><img id="lightboxImg"></div>
 <div class="modal" id="projectModal"><div class="modal-box"><button class="close-modal" onclick="closeProjectModal()">×</button><div id="modalContent"></div></div></div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
@@ -205,13 +319,67 @@ function setText(s,v){if(v){const e=document.querySelector(s);if(e)e.innerText=v
 function setLink(s,v,p){if(v){const e=document.querySelector(s);if(e){e.innerText=v;e.href=p+v.replaceAll(" ","");}}}
 function setEmail(s,v){if(v){const e=document.querySelector(s);if(e){e.innerText=v;e.href="mailto:"+v;}}}
 function setHeroImage(u){if(u){const h=document.querySelector(".hero");if(h)h.style.background="linear-gradient(90deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.74) 36%,rgba(0,0,0,.38) 72%,rgba(0,0,0,.2) 100%), url('"+u+"') center/cover no-repeat";}}
-function renderPortfolio(p){const g=document.querySelector(".portfolio");g.innerHTML="";p.forEach((x,i)=>{g.innerHTML+=`<article class="card" onclick="openProjectModal(${i})"><img src="${x.imageUrl}" alt="${x.title}"><h3>${x.title}</h3><p>${x.description||""}</p>${x.category?`<small>${x.category}</small>`:""}</article>`;});}
+let currentFilter = "All";
+
+function renderFilters(projects){
+  const holder=document.getElementById("portfolioFilters");
+  if(!holder) return;
+  const cats=["All",...new Set(projects.map(p=>p.category).filter(Boolean))];
+  holder.innerHTML=cats.map(c=>`<button class="filter-btn ${c===currentFilter?"active":""}" onclick="setPortfolioFilter('${c.replaceAll("'","\\'")}')">${c}</button>`).join("");
+}
+
+window.setPortfolioFilter=function(cat){
+  currentFilter=cat;
+  renderPortfolio(allProjects);
+};
+
+function renderFeatured(projects){
+  const box=document.getElementById("featuredProject");
+  if(!box) return;
+  const p=projects.find(x=>x.featured===true || x.featured==="true");
+  if(!p){ box.style.display="none"; return; }
+  box.style.display="grid";
+  box.innerHTML=`<img loading="lazy" src="${p.imageUrl}" alt="${p.title}"><div class="featured-copy"><p class="eyebrow">Featured Project</p><h2>${p.title}</h2><p>${p.description||""}</p><a class="btn gold" href="#portfolio">View Portfolio</a></div>`;
+}
+
+function renderPortfolio(p){
+  renderFilters(p);
+  renderFeatured(p);
+  const g=document.querySelector(".portfolio");
+  g.innerHTML="";
+  const filtered=currentFilter==="All"?p:p.filter(x=>x.category===currentFilter);
+  filtered.forEach((x)=>{
+    const realIndex=allProjects.indexOf(x);
+    g.innerHTML+=`<article class="card" onclick="openProjectModal(${realIndex})"><img loading="lazy" src="${x.imageUrl}" alt="${x.title}"><h3>${x.title}</h3><p>${x.description||""}</p>${x.category?`<small>${x.category}</small>`:""}</article>`;
+  });
+}
 function renderTeam(items){const g=document.querySelector(".team-grid");g.innerHTML="";items.forEach(t=>{g.innerHTML+=`<article class="team-card"><img src="${t.photoUrl}" alt="${t.name}"><h3>${t.name}</h3><p><strong>${t.position||""}</strong></p><p>${t.bio||""}</p></article>`;});}
 function renderTestimonials(items){const g=document.querySelector(".testimonial-grid");g.innerHTML="";items.forEach(t=>{g.innerHTML+=`<article class="testimonial-card"><p>“${t.text||""}”</p><h3>${t.name||""}</h3><p>${"★".repeat(Number(t.rating||5))}</p></article>`;});}
 function ytEmbed(url){const m=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/);return m?`https://www.youtube.com/embed/${m[1]}`:url;}
-window.openProjectModal=function(i){const p=allProjects[i];if(!p)return;const gallery=[p.imageUrl].concat(p.galleryUrls||[]).filter(Boolean);let html=`<h2>${p.title}</h2><p>${p.description||""}</p>${p.category?`<p><strong>Category:</strong> ${p.category}</p>`:""}<div class="gallery">${gallery.map(u=>`<img src="${u}" alt="">`).join("")}${(p.videoUrls||[]).map(u=>`<video controls src="${u}"></video>`).join("")}${(p.youtubeUrls||[]).map(u=>`<iframe src="${ytEmbed(u)}" frameborder="0" allowfullscreen></iframe>`).join("")}</div>`;if(p.beforeUrl||p.afterUrl)html+=`<div class="before-after">${p.beforeUrl?`<div class="ba-card"><span>Before</span><img src="${p.beforeUrl}"></div>`:""}${p.afterUrl?`<div class="ba-card"><span>After</span><img src="${p.afterUrl}"></div>`:""}</div>`;document.getElementById("modalContent").innerHTML=html;document.getElementById("projectModal").style.display="block";}
+window.openProjectModal=function(i){const p=allProjects[i];if(!p)return;const gallery=[p.imageUrl].concat(p.galleryUrls||[]).filter(Boolean);let html=`<h2>${p.title}</h2><p>${p.description||""}</p>${p.category?`<p><strong>Category:</strong> ${p.category}</p>`:""}<div class="gallery">${gallery.map(u=>`<img loading="lazy" onclick="openLightbox(\'${u}\')" src="${u}" alt="">`).join("")}${(p.videoUrls||[]).map(u=>`<video controls src="${u}"></video>`).join("")}${(p.youtubeUrls||[]).map(u=>`<iframe src="${ytEmbed(u)}" frameborder="0" allowfullscreen></iframe>`).join("")}</div>`;if(p.beforeUrl||p.afterUrl)html+=`<div class="before-after">${p.beforeUrl?`<div class="ba-card"><span>Before</span><img src="${p.beforeUrl}"></div>`:""}${p.afterUrl?`<div class="ba-card"><span>After</span><img src="${p.afterUrl}"></div>`:""}</div>`;document.getElementById("modalContent").innerHTML=html;document.getElementById("projectModal").style.display="block";}
 window.closeProjectModal=()=>document.getElementById("projectModal").style.display="none";
-async function loadFromAdmin(){try{const s=await getDoc(doc(db,"site","homepage"));if(s.exists()){const d=s.data();setText(".hero .eyebrow",d.heroEyebrow);setText(".hero h1",d.heroTitle||d.title);setText(".hero .lead",d.heroText||d.text);setText("#services .title h2",d.servicesTitle);setText("#services .title p:last-child",d.servicesIntro);setText("#portfolio .title h2",d.portfolioTitle);setText("#portfolio .title p:last-child",d.portfolioIntro);setText("#about h2",d.aboutTitle);setText("#about > div:first-child > p:last-child",d.aboutText);setText("#contact h2",d.contactTitle);setText(".contact-copy > p:nth-of-type(2)",d.contactText);setLink(".lines p:nth-child(1) a",d.managerPhone,"tel:");setLink(".lines p:nth-child(2) a",d.adminPhone,"tel:");setEmail(".lines p:nth-child(3) a",d.contactEmail);if(d.address){const a=document.querySelector(".lines p:nth-child(4)");if(a)a.innerHTML="<strong>Address:</strong> "+d.address;}if(d.managerPhone){const wa=document.querySelector(".whatsapp");if(wa)wa.href="https://wa.me/"+d.managerPhone.replace(/[^0-9]/g,"");}setHeroImage(d.heroImageUrl||d.imageUrl);}
+window.toggleMenu=function(){document.querySelector(".nav")?.classList.toggle("open");}
+window.openLightbox=function(url){event?.stopPropagation?.();document.getElementById("lightboxImg").src=url;document.getElementById("lightbox").style.display="flex";}
+window.closeLightbox=function(){event?.stopPropagation?.();document.getElementById("lightbox").style.display="none";}
+async function loadFromAdmin(){try{const s=await getDoc(doc(db,"site","homepage"));if(s.exists()){const d=s.data();setText(".hero .eyebrow",d.heroEyebrow);setText(".hero h1",d.heroTitle||d.title);setText(".hero .lead",d.heroText||d.text);setText("#services .title h2",d.servicesTitle);setText("#services .title p:last-child",d.servicesIntro);setText("#portfolio .title h2",d.portfolioTitle);setText("#portfolio .title p:last-child",d.portfolioIntro);setText("#about h2",d.aboutTitle);setText("#about > div:first-child > p:last-child",d.aboutText);setText("#contact h2",d.contactTitle);setText(".contact-copy > p:nth-of-type(2)",d.contactText);setLink(".lines p:nth-child(1) a",d.managerPhone,"tel:");setLink(".lines p:nth-child(2) a",d.adminPhone,"tel:");setEmail(".lines p:nth-child(3) a",d.contactEmail);if(d.address){const a=document.querySelector(".lines p:nth-child(4)");if(a)a.innerHTML="<strong>Address:</strong> "+d.address;}if(d.managerPhone){const wa=document.querySelector(".whatsapp");if(wa)wa.href="https://wa.me/"+d.managerPhone.replace(/[^0-9]/g,"");}setHeroImage(d.heroImageUrl||d.imageUrl);
+if(d.seoTitle){ document.title=d.seoTitle; }
+if(d.seoDescription){
+  let meta=document.querySelector('meta[name="description"]');
+  if(meta) meta.setAttribute("content",d.seoDescription);
+}
+if(d.gaId && !document.getElementById("gaScript")){
+  const s=document.createElement("script");
+  s.id="gaScript";
+  s.async=true;
+  s.src="https://www.googletagmanager.com/gtag/js?id="+d.gaId;
+  document.head.appendChild(s);
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  window.gtag=gtag;
+  gtag("js", new Date());
+  gtag("config", d.gaId);
+}
+}
 const ps=await getDocs(query(collection(db,"projects"),orderBy("order","asc")));const dyn=[];ps.forEach(x=>{const p=x.data();if(p.title&&p.imageUrl&&p.deleted!==true)dyn.push(p);});allProjects=dyn.concat(staticProjects);renderPortfolio(allProjects);
 const ts=await getDocs(query(collection(db,"team"),orderBy("order","asc")));const team=[];ts.forEach(x=>{const t=x.data();if(t.name&&t.photoUrl)team.push(t);});renderTeam(team);
 const rs=await getDocs(query(collection(db,"testimonials"),orderBy("order","asc")));const rev=[];rs.forEach(x=>{const r=x.data();if(r.name&&r.text)rev.push(r);});renderTestimonials(rev);
