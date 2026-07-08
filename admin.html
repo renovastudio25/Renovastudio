@@ -4,94 +4,112 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>ReNova Studio Admin</title>
-
 <style>
-body{
-  background:#111;
-  font-family:Arial,sans-serif;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-  margin:0;
-  color:#fff;
-}
-
-.box{
-  background:#222;
-  padding:30px;
-  border-radius:12px;
-  width:350px;
-  max-width:92vw;
-}
-
-h2{
-  text-align:center;
-}
-
-input,textarea{
-  width:100%;
-  padding:12px;
-  margin:10px 0;
-  border:none;
-  border-radius:6px;
-  box-sizing:border-box;
-}
-
-button{
-  width:100%;
-  padding:12px;
-  background:#d7aa42;
-  border:none;
-  border-radius:6px;
-  font-weight:bold;
-  cursor:pointer;
-  margin-top:10px;
-}
-
-#admin{
-  display:none;
-}
-
-#preview{
-  width:100%;
-  margin-top:10px;
-  border-radius:8px;
-  display:none;
-}
+*{box-sizing:border-box}
+body{margin:0;background:#111;color:#fff;font-family:Arial,sans-serif;padding:18px}
+.wrap{max-width:900px;margin:auto}
+.box{background:#222;padding:22px;border-radius:14px;margin:14px 0}
+h1,h2{margin-top:0;text-align:center}
+label{display:block;margin-top:12px;font-weight:bold}
+input,textarea,select{width:100%;padding:12px;margin-top:6px;border:0;border-radius:7px;font-size:15px}
+textarea{min-height:85px}
+button{width:100%;padding:13px;margin-top:14px;border:0;border-radius:7px;background:#d7aa42;font-weight:bold;cursor:pointer}
+button.dark{background:#444;color:#fff}
+.hidden{display:none}
+.msg{color:#d7aa42;font-weight:bold;text-align:center}
+.preview{width:100%;max-height:260px;object-fit:cover;border-radius:10px;margin-top:10px;display:none}
+.small{color:#bbb;font-size:13px}
 </style>
 </head>
-
 <body>
+<div class="wrap">
 
-<div class="box" id="login">
-  <h2>Admin Login</h2>
+<div class="box" id="loginBox">
+  <h1>ReNova Studio Admin</h1>
+  <label>Email</label>
   <input id="email" type="email" placeholder="Email">
+  <label>Password</label>
   <input id="password" type="password" placeholder="Password">
   <button onclick="login()">Login</button>
-  <p id="msg"></p>
+  <p id="loginMsg" class="msg"></p>
 </div>
 
-<div class="box" id="admin">
-  <h2>ReNova Studio</h2>
+<div id="adminBox" class="hidden">
+  <div class="box">
+    <h2>Hero</h2>
+    <label>Small hero text</label>
+    <input id="heroEyebrow" placeholder="Premium Renovation Specialists in London">
+    <label>Hero title</label>
+    <input id="heroTitle" placeholder="Renovate. Transform. Enjoy.">
+    <label>Hero description</label>
+    <textarea id="heroText"></textarea>
+    <label>Hero image</label>
+    <input id="heroFile" type="file" accept="image/*">
+    <img id="heroPreview" class="preview">
+    <button onclick="uploadHeroImage()">Upload Hero Image</button>
+  </div>
 
-  <input id="title" placeholder="Title">
-  <textarea id="text" rows="6" placeholder="Description"></textarea>
+  <div class="box">
+    <h2>Services Section</h2>
+    <label>Services title</label>
+    <input id="servicesTitle" placeholder="Our Services">
+    <label>Services intro</label>
+    <textarea id="servicesIntro"></textarea>
+    <p class="small">Service cards are kept from the original design.</p>
+  </div>
 
-  <input id="imageFile" type="file" accept="image/*">
-  <img id="preview">
+  <div class="box">
+    <h2>Portfolio Section</h2>
+    <label>Portfolio title</label>
+    <input id="portfolioTitle" placeholder="Our Recent Work">
+    <label>Portfolio intro</label>
+    <textarea id="portfolioIntro"></textarea>
+    <label>New project title</label>
+    <input id="projectTitle">
+    <label>New project description</label>
+    <textarea id="projectDescription"></textarea>
+    <label>New project image</label>
+    <input id="projectFile" type="file" accept="image/*">
+    <img id="projectPreview" class="preview">
+    <button onclick="uploadProject()">Upload New Project</button>
+  </div>
 
-  <button onclick="uploadImage()">Upload Image</button>
-  <button onclick="saveContent()">Save Content</button>
-  <button onclick="logout()">Logout</button>
+  <div class="box">
+    <h2>About</h2>
+    <label>About title</label>
+    <input id="aboutTitle">
+    <label>About text</label>
+    <textarea id="aboutText"></textarea>
+  </div>
 
-  <p id="saved"></p>
+  <div class="box">
+    <h2>Contact</h2>
+    <label>Contact title</label>
+    <input id="contactTitle">
+    <label>Contact text</label>
+    <textarea id="contactText"></textarea>
+    <label>Project Manager / WhatsApp</label>
+    <input id="managerPhone">
+    <label>Administrator phone</label>
+    <input id="adminPhone">
+    <label>Email</label>
+    <input id="contactEmail">
+    <label>Address</label>
+    <input id="address">
+  </div>
+
+  <div class="box">
+    <button onclick="saveAll()">Save All Text</button>
+    <button class="dark" onclick="logout()">Logout</button>
+    <p id="status" class="msg"></p>
+  </div>
+</div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
 
 const firebaseConfig = {
@@ -108,15 +126,15 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-window.login = async function(){
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
+const $ = (id) => document.getElementById(id);
+const status = (text) => $("status").innerText = text;
 
+window.login = async function(){
   try{
-    await signInWithEmailAndPassword(auth,email,password);
-    document.getElementById("msg").innerText = "";
+    await signInWithEmailAndPassword(auth, $("email").value.trim(), $("password").value);
+    $("loginMsg").innerText = "";
   }catch(error){
-    document.getElementById("msg").innerText = "Login failed: " + error.message;
+    $("loginMsg").innerText = "Login failed: " + error.message;
   }
 };
 
@@ -124,81 +142,108 @@ window.logout = async function(){
   await signOut(auth);
 };
 
-window.saveContent = async function(){
-  const title = document.getElementById("title").value;
-  const text = document.getElementById("text").value;
+async function uploadFile(inputId, previewId, folder){
+  const file = $(inputId).files[0];
+  if(!file) throw new Error("Choose an image first.");
+  const safeName = file.name.replaceAll(" ","-").toLowerCase();
+  const path = folder + "/" + Date.now() + "-" + safeName;
+  const storageRef = ref(storage, path);
+  await uploadBytes(storageRef, file);
+  const url = await getDownloadURL(storageRef);
+  $(previewId).src = url;
+  $(previewId).style.display = "block";
+  return url;
+}
 
+window.uploadHeroImage = async function(){
   try{
-    await setDoc(doc(db,"site","homepage"),{
-      title:title,
-      text:text
-    }, { merge:true });
-
-    document.getElementById("saved").innerText = "Saved successfully.";
-  }catch(error){
-    document.getElementById("saved").innerText = "Save failed: " + error.message;
-  }
+    status("Uploading hero image...");
+    const imageUrl = await uploadFile("heroFile", "heroPreview", "hero");
+    await setDoc(doc(db,"site","homepage"), { heroImageUrl:imageUrl, imageUrl:imageUrl }, { merge:true });
+    status("Hero image uploaded.");
+  }catch(error){ status("Upload failed: " + error.message); }
 };
 
-window.uploadImage = async function(){
-  const file = document.getElementById("imageFile").files[0];
-
-  if(!file){
-    document.getElementById("saved").innerText = "Choose an image first.";
-    return;
-  }
-
+window.uploadProject = async function(){
   try{
-    document.getElementById("saved").innerText = "Uploading...";
-
-    const fileName = Date.now() + "-" + file.name;
-    const storageRef = ref(storage, "images/" + fileName);
-
-    await uploadBytes(storageRef, file);
-    const imageUrl = await getDownloadURL(storageRef);
-
-    await setDoc(doc(db,"site","homepage"),{
-      imageUrl:imageUrl
-    }, { merge:true });
-
-    document.getElementById("preview").src = imageUrl;
-    document.getElementById("preview").style.display = "block";
-    document.getElementById("saved").innerText = "Image uploaded successfully.";
-  }catch(error){
-    document.getElementById("saved").innerText = "Upload failed: " + error.message;
-  }
+    status("Uploading project...");
+    const imageUrl = await uploadFile("projectFile", "projectPreview", "projects");
+    await addDoc(collection(db,"projects"), {
+      title:$("projectTitle").value,
+      description:$("projectDescription").value,
+      imageUrl:imageUrl,
+      createdAt:serverTimestamp()
+    });
+    $("projectTitle").value = "";
+    $("projectDescription").value = "";
+    $("projectFile").value = "";
+    status("Project uploaded.");
+  }catch(error){ status("Upload failed: " + error.message); }
 };
 
-async function loadContent(){
+window.saveAll = async function(){
   try{
-    const snap = await getDoc(doc(db,"site","homepage"));
+    await setDoc(doc(db,"site","homepage"), {
+      heroEyebrow:$("heroEyebrow").value,
+      heroTitle:$("heroTitle").value,
+      title:$("heroTitle").value,
+      heroText:$("heroText").value,
+      text:$("heroText").value,
+      servicesTitle:$("servicesTitle").value,
+      servicesIntro:$("servicesIntro").value,
+      portfolioTitle:$("portfolioTitle").value,
+      portfolioIntro:$("portfolioIntro").value,
+      aboutTitle:$("aboutTitle").value,
+      aboutText:$("aboutText").value,
+      contactTitle:$("contactTitle").value,
+      contactText:$("contactText").value,
+      managerPhone:$("managerPhone").value,
+      adminPhone:$("adminPhone").value,
+      contactEmail:$("contactEmail").value,
+      address:$("address").value,
+      updatedAt:new Date().toISOString()
+    }, { merge:true });
+    status("Saved successfully.");
+  }catch(error){ status("Save failed: " + error.message); }
+};
 
-    if(snap.exists()){
-      const data = snap.data();
-      document.getElementById("title").value = data.title || "";
-      document.getElementById("text").value = data.text || "";
+async function loadSettings(){
+  const snap = await getDoc(doc(db,"site","homepage"));
+  if(!snap.exists()) return;
+  const d = snap.data();
 
-      if(data.imageUrl){
-        document.getElementById("preview").src = data.imageUrl;
-        document.getElementById("preview").style.display = "block";
-      }
-    }
-  }catch(error){
-    document.getElementById("saved").innerText = "Load failed: " + error.message;
+  $("heroEyebrow").value = d.heroEyebrow || "Premium Renovation Specialists in London";
+  $("heroTitle").value = d.heroTitle || d.title || "Renovate. Transform. Enjoy.";
+  $("heroText").value = d.heroText || d.text || "";
+  $("servicesTitle").value = d.servicesTitle || "Our Services";
+  $("servicesIntro").value = d.servicesIntro || "";
+  $("portfolioTitle").value = d.portfolioTitle || "Our Recent Work";
+  $("portfolioIntro").value = d.portfolioIntro || "";
+  $("aboutTitle").value = d.aboutTitle || "";
+  $("aboutText").value = d.aboutText || "";
+  $("contactTitle").value = d.contactTitle || "Request a Free Quote";
+  $("contactText").value = d.contactText || "";
+  $("managerPhone").value = d.managerPhone || "";
+  $("adminPhone").value = d.adminPhone || "";
+  $("contactEmail").value = d.contactEmail || "";
+  $("address").value = d.address || "";
+
+  if(d.heroImageUrl || d.imageUrl){
+    $("heroPreview").src = d.heroImageUrl || d.imageUrl;
+    $("heroPreview").style.display = "block";
   }
 }
 
-onAuthStateChanged(auth,function(user){
+onAuthStateChanged(auth, async (user) => {
   if(user){
-    document.getElementById("login").style.display = "none";
-    document.getElementById("admin").style.display = "block";
-    loadContent();
+    $("loginBox").classList.add("hidden");
+    $("adminBox").classList.remove("hidden");
+    await loadSettings();
   }else{
-    document.getElementById("login").style.display = "block";
-    document.getElementById("admin").style.display = "none";
+    $("loginBox").classList.remove("hidden");
+    $("adminBox").classList.add("hidden");
   }
 });
 </script>
-
 </body>
 </html>
