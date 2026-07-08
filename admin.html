@@ -7,45 +7,57 @@
 
 <style>
 body{
-background:#111;
-font-family:Arial,sans-serif;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
-margin:0;
-color:#fff;
+  background:#111;
+  font-family:Arial,sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  margin:0;
+  color:#fff;
 }
 
 .box{
-background:#222;
-padding:30px;
-border-radius:12px;
-width:350px;
+  background:#222;
+  padding:30px;
+  border-radius:12px;
+  width:350px;
+  max-width:92vw;
+}
+
+h2{
+  text-align:center;
 }
 
 input,textarea{
-width:100%;
-padding:12px;
-margin:10px 0;
-border:none;
-border-radius:6px;
-box-sizing:border-box;
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border:none;
+  border-radius:6px;
+  box-sizing:border-box;
 }
 
 button{
-width:100%;
-padding:12px;
-background:#d7aa42;
-border:none;
-border-radius:6px;
-font-weight:bold;
-cursor:pointer;
-margin-top:10px;
+  width:100%;
+  padding:12px;
+  background:#d7aa42;
+  border:none;
+  border-radius:6px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:10px;
 }
 
 #admin{
-display:none;
+  display:none;
+}
+
+#preview{
+  width:100%;
+  margin-top:10px;
+  border-radius:8px;
+  display:none;
 }
 </style>
 </head>
@@ -53,41 +65,34 @@ display:none;
 <body>
 
 <div class="box" id="login">
-
-<h2>Admin Login</h2>
-
-<input id="email" type="email" placeholder="Email">
-
-<input id="password" type="password" placeholder="Password">
-
-<button onclick="login()">Login</button>
-
-<p id="msg"></p>
-
+  <h2>Admin Login</h2>
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <p id="msg"></p>
 </div>
 
 <div class="box" id="admin">
+  <h2>ReNova Studio</h2>
 
-<h2>ReNova Studio</h2>
+  <input id="title" placeholder="Title">
+  <textarea id="text" rows="6" placeholder="Description"></textarea>
 
-<input id="title" placeholder="Title">
+  <input id="imageFile" type="file" accept="image/*">
+  <img id="preview">
 
-<textarea id="text" rows="6" placeholder="Description"></textarea>
-<input id="imageFile" type="file" accept="image/*">
-<img id="preview" style="width:100%;margin-top:10px;border-radius:8px;display:none;">
-<button onclick="uploadImage()">Upload Image</button>
-<button onclick="saveContent()">Save Content</button>
+  <button onclick="uploadImage()">Upload Image</button>
+  <button onclick="saveContent()">Save Content</button>
+  <button onclick="logout()">Logout</button>
 
-<button onclick="logout()">Logout</button>
-
-<p id="saved"></p>
-
+  <p id="saved"></p>
 </div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyCfWJTOI9Nr6NfG0LRWgotc57rQlCcnWIw",
@@ -102,14 +107,16 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
+
 window.login = async function(){
-  const email = document.getElementById("email").value;
+  const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
 
   try{
     await signInWithEmailAndPassword(auth,email,password);
+    document.getElementById("msg").innerText = "";
   }catch(error){
-    document.getElementById("msg").innerText = "Login failed";
+    document.getElementById("msg").innerText = "Login failed: " + error.message;
   }
 };
 
@@ -121,13 +128,18 @@ window.saveContent = async function(){
   const title = document.getElementById("title").value;
   const text = document.getElementById("text").value;
 
-  await setDoc(doc(db,"site","homepage"),{
-    title:title,
-    text:text
-  });
+  try{
+    await setDoc(doc(db,"site","homepage"),{
+      title:title,
+      text:text
+    }, { merge:true });
 
-  document.getElementById("saved").innerText = "Saved successfully.";
+    document.getElementById("saved").innerText = "Saved successfully.";
+  }catch(error){
+    document.getElementById("saved").innerText = "Save failed: " + error.message;
+  }
 };
+
 window.uploadImage = async function(){
   const file = document.getElementById("imageFile").files[0];
 
@@ -156,12 +168,23 @@ window.uploadImage = async function(){
     document.getElementById("saved").innerText = "Upload failed: " + error.message;
   }
 };
-async function loadContent(){
-  const snap = await getDoc(doc(db,"site","homepage"));
 
-  if(snap.exists()){
-    document.getElementById("title").value = snap.data().title || "";
-    document.getElementById("text").value = snap.data().text || "";
+async function loadContent(){
+  try{
+    const snap = await getDoc(doc(db,"site","homepage"));
+
+    if(snap.exists()){
+      const data = snap.data();
+      document.getElementById("title").value = data.title || "";
+      document.getElementById("text").value = data.text || "";
+
+      if(data.imageUrl){
+        document.getElementById("preview").src = data.imageUrl;
+        document.getElementById("preview").style.display = "block";
+      }
+    }
+  }catch(error){
+    document.getElementById("saved").innerText = "Load failed: " + error.message;
   }
 }
 
