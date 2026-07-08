@@ -229,5 +229,142 @@ footer{text-align:center;color:var(--gold);padding:25px;background:#030303}
 </main>
 
 <footer>© 2025 ReNova Studio. All Rights Reserved.</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getFirestore, doc, getDoc, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCfWJTOI9Nr6NfG0LRWgotc57rQlCcnWIw",
+  authDomain: "renovastudio-af25a.firebaseapp.com",
+  projectId: "renovastudio-af25a",
+  storageBucket: "renovastudio-af25a.firebasestorage.app",
+  messagingSenderId: "195402777911",
+  appId: "1:195402777911:web:d7aab76283e235583606b2"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const originalPortfolio = Array.from(document.querySelectorAll(".portfolio .card")).map(card => {
+  const img = card.querySelector("img");
+  return {
+    title: card.querySelector("h3")?.innerText || "",
+    description: card.querySelector("p")?.innerText || "",
+    imageUrl: img?.getAttribute("src") || "",
+    alt: img?.getAttribute("alt") || ""
+  };
+});
+
+function setText(selector, value){
+  if(value){
+    const el = document.querySelector(selector);
+    if(el) el.innerText = value;
+  }
+}
+
+function setLink(selector, value, prefix){
+  if(value){
+    const el = document.querySelector(selector);
+    if(el){
+      el.innerText = value;
+      el.href = prefix + value.replaceAll(" ","");
+    }
+  }
+}
+
+function setEmail(selector, value){
+  if(value){
+    const el = document.querySelector(selector);
+    if(el){
+      el.innerText = value;
+      el.href = "mailto:" + value;
+    }
+  }
+}
+
+function setHeroImage(url){
+  if(url){
+    const hero = document.querySelector(".hero");
+    if(hero){
+      hero.style.background =
+        "linear-gradient(90deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.74) 36%,rgba(0,0,0,.38) 72%,rgba(0,0,0,.2) 100%), url('" + url + "') center/cover no-repeat";
+    }
+  }
+}
+
+function renderPortfolio(projects){
+  const grid = document.querySelector(".portfolio");
+  if(!grid) return;
+  grid.innerHTML = "";
+  projects.forEach(p => {
+    grid.innerHTML += `
+      <article class="card">
+        <img src="${p.imageUrl}" alt="${p.alt || p.title}">
+        <h3>${p.title}</h3>
+        <p>${p.description || ""}</p>
+      </article>
+    `;
+  });
+}
+
+async function loadFromAdmin(){
+  try{
+    const snap = await getDoc(doc(db,"site","homepage"));
+    if(snap.exists()){
+      const d = snap.data();
+
+      setText(".hero .eyebrow", d.heroEyebrow);
+      setText(".hero h1", d.heroTitle || d.title);
+      setText(".hero .lead", d.heroText || d.text);
+
+      setText("#services .title h2", d.servicesTitle);
+      setText("#services .title p:last-child", d.servicesIntro);
+
+      setText("#portfolio .title h2", d.portfolioTitle);
+      setText("#portfolio .title p:last-child", d.portfolioIntro);
+
+      setText("#about h2", d.aboutTitle);
+      setText("#about > div:first-child > p:last-child", d.aboutText);
+
+      setText("#contact h2", d.contactTitle);
+      setText(".contact-copy > p:nth-of-type(2)", d.contactText);
+
+      setLink(".lines p:nth-child(1) a", d.managerPhone, "tel:");
+      setLink(".lines p:nth-child(2) a", d.adminPhone, "tel:");
+      setEmail(".lines p:nth-child(3) a", d.contactEmail);
+
+      if(d.address){
+        const addressLine = document.querySelector(".lines p:nth-child(4)");
+        if(addressLine) addressLine.innerHTML = "<strong>Address:</strong> " + d.address;
+      }
+
+      if(d.managerPhone){
+        const wa = document.querySelector(".whatsapp");
+        if(wa) wa.href = "https://wa.me/" + d.managerPhone.replace(/[^0-9]/g,"");
+      }
+
+      setHeroImage(d.heroImageUrl || d.imageUrl);
+    }
+
+    const q = query(collection(db,"projects"), orderBy("createdAt","desc"));
+    const projectSnap = await getDocs(q);
+    const added = [];
+    projectSnap.forEach(doc => {
+      const p = doc.data();
+      if(p.title && p.imageUrl) added.push(p);
+    });
+
+    if(added.length){
+      renderPortfolio(added.concat(originalPortfolio));
+    }
+  }catch(error){
+    console.log("Admin content load failed:", error);
+  }
+}
+
+loadFromAdmin();
+</script>
+
 </body>
 </html>
