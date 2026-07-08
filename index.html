@@ -347,7 +347,7 @@ async function loadFromAdmin(){
       setHeroImage(d.heroImageUrl || d.imageUrl);
     }
 
-    const q = query(collection(db,"projects"), orderBy("createdAt","desc"));
+    const q = query(collection(db,"projects"), orderBy("order","asc"));
     const projectSnap = await getDocs(q);
     const added = [];
     projectSnap.forEach(doc => {
