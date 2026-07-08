@@ -1,111 +1,84 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>ReNova Studio Admin</title>
+
 <style>
-body{font-family:Arial,sans-serif;background:#111;color:#fff;margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh}
-.box{background:#222;padding:30px;border-radius:10px;width:330px;text-align:center}
-input,textarea{width:100%;padding:12px;margin:8px 0;border:0;border-radius:5px;box-sizing:border-box}
-button{width:100%;padding:12px;background:#d7aa42;border:0;font-weight:bold;cursor:pointer;margin-top:8px}
-.hidden{display:none}
-a{color:#d7aa42}
+body{
+background:#111;
+font-family:Arial,sans-serif;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+margin:0;
+color:#fff;
+}
+
+.box{
+background:#222;
+padding:30px;
+border-radius:12px;
+width:350px;
+}
+
+input,textarea{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:none;
+border-radius:6px;
+box-sizing:border-box;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#d7aa42;
+border:none;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+}
+
+#admin{
+display:none;
+}
 </style>
 </head>
+
 <body>
 
-<div class="box" id="loginBox">
-  <h2>ReNova Studio Admin</h2>
-  <input id="email" type="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
-  <p id="loginMsg"></p>
+<div class="box" id="login">
+
+<h2>Admin Login</h2>
+
+<input id="email" type="email" placeholder="Email">
+
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+<p id="msg"></p>
+
 </div>
 
-<div class="box hidden" id="adminBox">
-  <h2>Welcome Admin</h2>
-  <p>You are logged in.</p>
+<div class="box" id="admin">
 
-  <input id="siteTitle" placeholder="Site title">
-  <textarea id="siteText" rows="5" placeholder="Main text"></textarea>
+<h2>ReNova Studio</h2>
 
-  <button onclick="saveContent()">Save Content</button>
-  <button onclick="logout()">Logout</button>
-  <p id="saveMsg"></p>
+<input id="title" placeholder="Title">
+
+<textarea id="text" rows="6" placeholder="Description"></textarea>
+
+<button onclick="saveContent()">Save Content</button>
+
+<button onclick="logout()">Logout</button>
+
+<p id="saved"></p>
+
 </div>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCfWJTOI9Nr6NfG0LRWgotc57rQlCcnWIw",
-  authDomain: "renovastudio-af25a.firebaseapp.com",
-  projectId: "renovastudio-af25a",
-  storageBucket: "renovastudio-af25a.firebasestorage.app",
-  messagingSenderId: "195402777911",
-  appId: "1:195402777911:web:d7aab76283e235583606b2"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-const loginBox = document.getElementById("loginBox");
-const adminBox = document.getElementById("adminBox");
-
-window.login = async function(){
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const msg = document.getElementById("loginMsg");
-
-  try{
-    await signInWithEmailAndPassword(auth, email, password);
-    msg.textContent = "";
-  }catch(error){
-    msg.textContent = "Login failed. Check email or password.";
-  }
-}
-
-window.logout = async function(){
-  await signOut(auth);
-}
-
-window.saveContent = async function(){
-  const title = document.getElementById("siteTitle").value;
-  const text = document.getElementById("siteText").value;
-
-  await setDoc(doc(db, "site", "homepage"), {
-    title: title,
-    text: text,
-    updatedAt: new Date().toISOString()
-  });
-
-  document.getElementById("saveMsg").textContent = "Saved successfully.";
-}
-
-async function loadContent(){
-  const snap = await getDoc(doc(db, "site", "homepage"));
-  if(snap.exists()){
-    const data = snap.data();
-    document.getElementById("siteTitle").value = data.title || "";
-    document.getElementById("siteText").value = data.text || "";
-  }
-}
-
-onAuthStateChanged(auth, async (user) => {
-  if(user){
-    loginBox.classList.add("hidden");
-    adminBox.classList.remove("hidden");
-    await loadContent();
-  }else{
-    loginBox.classList.remove("hidden");
-    adminBox.classList.add("hidden");
-  }
-});
-</script>
-
-</body>
-</html>
