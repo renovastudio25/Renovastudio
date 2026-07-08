@@ -6,74 +6,31 @@
 <title>ReNova Studio | Renovation & Refurbishment in London</title>
 <meta name="description" content="ReNova Studio provides renovation and refurbishment services in London: kitchens, bathrooms, garden rooms, flooring, tiling, carpentry, decorating, plumbing and electrical work.">
 <style>
-:root{
-  --black:#050505;
-  --dark:#080808;
-  --gold:#d7aa42;
-  --gold2:#f3d37b;
-  --cream:#f7f2e8;
-  --white:#fff;
-  --text:#202020;
-}
+:root{--black:#050505;--dark:#080808;--gold:#d7aa42;--gold2:#f3d37b;--cream:#f7f2e8;--white:#fff;--text:#202020}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:Arial,Helvetica,sans-serif;background:var(--black);color:var(--white);line-height:1.65}
 a{text-decoration:none;color:inherit}
-img{display:block;max-width:100%}
-.header{
-  position:fixed;top:0;left:0;right:0;z-index:50;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 5%;
-  background:rgba(0,0,0,.86);
-  border-bottom:1px solid rgba(215,170,66,.35);
-  backdrop-filter:blur(14px);
-}
-.brand{
-  display:flex;align-items:center;gap:12px;
-}
-.brand-mark{
-  width:42px;height:50px;border:3px solid var(--gold);
-  clip-path:polygon(0 30%,62% 0,62% 32%,100% 52%,100% 100%,0 100%);
-}
-.brand-text strong{
-  display:block;font-family:Georgia,serif;color:var(--gold);font-size:31px;line-height:1;
-}
-.brand-text span{
-  display:block;letter-spacing:7px;color:var(--gold2);font-size:11px;margin-top:4px;
-}
-.nav{display:flex;gap:28px;text-transform:uppercase;font-size:13px;letter-spacing:1px}
+img,video{display:block;max-width:100%}
+.header{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:12px 5%;background:rgba(0,0,0,.86);border-bottom:1px solid rgba(215,170,66,.35);backdrop-filter:blur(14px)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{width:42px;height:50px;border:3px solid var(--gold);clip-path:polygon(0 30%,62% 0,62% 32%,100% 52%,100% 100%,0 100%)}
+.brand-text strong{display:block;font-family:Georgia,serif;color:var(--gold);font-size:31px;line-height:1}
+.brand-text span{display:block;letter-spacing:7px;color:var(--gold2);font-size:11px;margin-top:4px}
+.nav{display:flex;gap:24px;text-transform:uppercase;font-size:13px;letter-spacing:1px}
 .nav a:hover{color:var(--gold)}
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;
-  padding:13px 22px;border:1px solid var(--gold);
-  text-transform:uppercase;font-weight:800;font-size:13px;letter-spacing:.6px;
-}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 22px;border:1px solid var(--gold);text-transform:uppercase;font-weight:800;font-size:13px;letter-spacing:.6px}
 .btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#070707}
 .btn.dark{background:rgba(0,0,0,.22);color:#fff}
-.btn.dark:hover{background:#fff;color:#111;border-color:#fff}
-.hero{
-  min-height:100vh;
-  position:relative;
-  display:flex;align-items:center;
-  padding:145px 5% 90px;
-  background:
-    linear-gradient(90deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.74) 36%,rgba(0,0,0,.38) 72%,rgba(0,0,0,.2) 100%),
-    url('hero-garden.png')center/cover no-repeat;
-}
-.hero::after{
-  content:"";position:absolute;left:0;right:0;bottom:0;height:150px;
-  background:linear-gradient(transparent,var(--black));
-}
+.hero{min-height:100vh;position:relative;display:flex;align-items:center;padding:145px 5% 90px;background:linear-gradient(90deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.74) 36%,rgba(0,0,0,.38) 72%,rgba(0,0,0,.2) 100%),url('hero-garden.png') center/cover no-repeat}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:150px;background:linear-gradient(transparent,var(--black))}
 .hero-content{position:relative;z-index:2;max-width:710px}
 .eyebrow{color:var(--gold);text-transform:uppercase;letter-spacing:2.4px;font-size:13px;font-weight:800;margin-bottom:15px}
 h1{font-family:Georgia,serif;font-size:clamp(43px,6vw,86px);line-height:1.03;margin-bottom:24px;letter-spacing:-1.5px}
 h1 span{color:var(--gold)}
 .lead{font-size:clamp(18px,2vw,22px);color:#eee;max-width:640px;margin-bottom:32px}
 .actions{display:flex;gap:14px;flex-wrap:wrap}
-.feature-bar{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  background:#080808;border-top:1px solid rgba(215,170,66,.35);border-bottom:1px solid rgba(215,170,66,.35)
-}
+.feature-bar{display:grid;grid-template-columns:repeat(4,1fr);background:#080808;border-top:1px solid rgba(215,170,66,.35);border-bottom:1px solid rgba(215,170,66,.35)}
 .feature-bar div{padding:28px 5%;border-right:1px solid rgba(215,170,66,.2)}
 .feature-bar strong{display:block;color:var(--gold);font-family:Georgia,serif;font-size:24px}
 .feature-bar span{color:#ddd;font-size:14px}
@@ -88,11 +45,15 @@ h1 span{color:var(--gold)}
 .service{background:#fff;border:1px solid rgba(215,170,66,.45);padding:28px;min-height:190px}
 .service h3{font-family:Georgia,serif;font-size:22px;margin-bottom:10px}
 .service p{color:#555}
-.portfolio{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.card{background:#111;border:1px solid rgba(215,170,66,.45);overflow:hidden}
-.card img{width:100%;height:320px;object-fit:cover}
-.card h3{color:var(--gold);font-family:Georgia,serif;font-size:24px;padding:16px 18px 4px}
-.card p{color:#ddd;padding:0 18px 20px}
+.portfolio,.team-grid,.testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card,.team-card,.testimonial-card{background:#111;border:1px solid rgba(215,170,66,.45);overflow:hidden}
+.card{cursor:pointer}
+.card img,.team-card img{width:100%;height:320px;object-fit:cover}
+.card h3,.team-card h3{color:var(--gold);font-family:Georgia,serif;font-size:24px;padding:16px 18px 4px}
+.card p,.team-card p,.testimonial-card p{color:#ddd;padding:0 18px 20px}
+.card small{display:block;color:var(--gold2);padding:0 18px 16px;text-transform:uppercase;letter-spacing:1px}
+.testimonial-card{padding:24px}
+.testimonial-card h3{color:var(--gold);font-family:Georgia,serif;margin-top:15px}
 .about{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
 .about h2,.contact h2{font-family:Georgia,serif;font-size:clamp(36px,4vw,56px);line-height:1.1;margin-bottom:18px}
 .about p{color:#444;font-size:18px}
@@ -109,57 +70,43 @@ input,select,textarea{width:100%;padding:15px;background:#080808;color:#fff;bord
 button{border:0;cursor:pointer}
 .whatsapp{position:fixed;right:18px;bottom:18px;background:#25d366;color:#06140a;padding:14px 18px;border-radius:999px;font-weight:900;z-index:100;box-shadow:0 15px 35px rgba(0,0,0,.35)}
 footer{text-align:center;color:var(--gold);padding:25px;background:#030303}
-@media(max-width:1000px){
-  .nav{display:none}
-  .services,.portfolio,.feature-bar,.about,.contact{grid-template-columns:1fr 1fr}
-}
-@media(max-width:650px){
-  .header{padding:10px 4%}
-  .brand-mark{width:32px;height:38px}
-  .brand-text strong{font-size:24px}
-  .brand-text span{font-size:9px;letter-spacing:5px}
-  .header .btn{display:none}
-  .hero{min-height:780px;background-position:center;padding-top:125px}
-  .services,.portfolio,.feature-bar,.about,.contact{grid-template-columns:1fr}
-  .section{padding:62px 5%}
-  .card img{height:300px}
-}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:999;display:none;overflow:auto;padding:30px 5%}
+.modal-box{max-width:1050px;margin:30px auto;background:#111;border:1px solid rgba(215,170,66,.55);padding:22px;position:relative}
+.close-modal{position:absolute;right:12px;top:12px;background:var(--gold);color:#000;border-radius:50%;width:38px;height:38px;font-weight:bold}
+.modal h2{font-family:Georgia,serif;color:var(--gold);font-size:34px;margin:20px 0 8px}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.gallery img,.gallery video,.gallery iframe{width:100%;height:220px;object-fit:cover;border:1px solid rgba(215,170,66,.35)}
+.before-after{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+.ba-card{position:relative;border:1px solid rgba(215,170,66,.35)}
+.ba-card span{position:absolute;left:10px;top:10px;background:#000;color:var(--gold);padding:5px 9px;font-weight:bold}
+.ba-card img{width:100%;height:320px;object-fit:cover}
+.form-status{color:var(--gold);font-weight:bold}
+@media(max-width:1000px){.nav{display:none}.services,.portfolio,.feature-bar,.about,.contact,.team-grid,.testimonial-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.header{padding:10px 4%}.brand-mark{width:32px;height:38px}.brand-text strong{font-size:24px}.brand-text span{font-size:9px;letter-spacing:5px}.header .btn{display:none}.hero{min-height:780px;background-position:center;padding-top:125px}.services,.portfolio,.feature-bar,.about,.contact,.gallery,.before-after,.team-grid,.testimonial-grid{grid-template-columns:1fr}.section{padding:62px 5%}.card img,.team-card img{height:300px}.whatsapp{padding:11px 14px;font-size:13px;right:10px;bottom:10px}}
 </style>
 </head>
 <body>
 <a class="whatsapp" href="https://wa.me/447842722366" target="_blank">WhatsApp</a>
-
 <header class="header">
-  <a href="#home" class="brand">
-    <span class="brand-mark"></span>
-    <span class="brand-text"><strong>ReNova</strong><span>STUDIO</span></span>
-  </a>
-  <nav class="nav">
-    <a href="#home">Home</a><a href="#services">Services</a><a href="#portfolio">Portfolio</a><a href="#about">About</a><a href="#contact">Contact</a>
-  </nav>
+  <a href="#home" class="brand"><span class="brand-mark"></span><span class="brand-text"><strong>ReNova</strong><span>STUDIO</span></span></a>
+  <nav class="nav"><a href="#home">Home</a><a href="#services">Services</a><a href="#portfolio">Portfolio</a><a href="#team">Team</a><a href="#testimonials">Reviews</a><a href="#contact">Contact</a></nav>
   <a class="btn gold" href="#contact">Free Quote</a>
 </header>
-
 <main id="home">
 <section class="hero">
   <div class="hero-content">
     <p class="eyebrow">Premium Renovation Specialists in London</p>
     <h1>Renovate. Transform. <span>Enjoy.</span></h1>
     <p class="lead">ReNova Studio delivers high-quality renovation, garden rooms, kitchens, bathrooms, flooring, carpentry and complete refurbishment work across London.</p>
-    <div class="actions">
-      <a class="btn gold" href="#contact">Request a Free Quote</a>
-      <a class="btn dark" href="#portfolio">View Projects</a>
-    </div>
+    <div class="actions"><a class="btn gold" href="#contact">Request a Free Quote</a><a class="btn dark" href="#portfolio">View Projects</a></div>
   </div>
 </section>
-
 <section class="feature-bar">
   <div><strong>Design & Planning</strong><span>We help shape the perfect space for your lifestyle.</span></div>
   <div><strong>Build & Renovate</strong><span>High quality workmanship from start to finish.</span></div>
   <div><strong>Finish & Detail</strong><span>Premium finishes and attention to every detail.</span></div>
   <div><strong>Reliable Team</strong><span>Clear communication and trusted project delivery.</span></div>
 </section>
-
 <section id="services" class="section light">
   <div class="title"><p class="eyebrow">What We Do</p><h2>Our Services</h2><p>Professional renovation work for homes, flats, commercial spaces and outdoor projects.</p></div>
   <div class="services">
@@ -173,67 +120,39 @@ footer{text-align:center;color:var(--gold);padding:25px;background:#030303}
     <article class="service"><h3>Carpentry & Joinery</h3><p>Staircases, feature walls, shelving and bespoke woodwork.</p></article>
   </div>
 </section>
-
 <section id="portfolio" class="section dark">
   <div class="title"><p class="eyebrow">Selected Projects</p><h2>Our Recent Work</h2><p>Real project photos from ReNova Studio renovation and finishing work.</p></div>
-  <div class="portfolio">
-    <article class="card"><img src="hero-garden.png" alt="Garden Room & Outdoor BBQ Area"><h3>Garden Room & Outdoor BBQ Area</h3><p>Timber garden gazebo with covered seating, brick BBQ/fireplace and warm outdoor lighting.</p></article>
-<article class="card"><img src="open-plan-kitchen.jpg" alt="Open Plan Kitchen Renovation"><h3>Open Plan Kitchen Renovation</h3><p>Kitchen refurbishment with herringbone flooring, worktops, lighting and modern fitted units.</p></article>
-<article class="card"><img src="kitchen-grey.jpg" alt="Compact Kitchen & Herringbone Flooring"><h3>Compact Kitchen & Herringbone Flooring</h3><p>Grey kitchen units, bright ceiling lights and clean flooring finish.</p></article>
-<article class="card"><img src="bathroom.jpg" alt="Bathroom Renovation"><h3>Bathroom Renovation</h3><p>Shower enclosure, marble-style tiles, vanity unit, toilet and plumbing finish.</p></article>
-<article class="card"><img src="staircase.jpg" alt="Staircase & Feature Wall"><h3>Staircase & Feature Wall</h3><p>Wood staircase finish with vertical slat feature wall and carpentry detailing.</p></article>
-<article class="card"><img src="loft-floor.jpg" alt="Loft Room Flooring"><h3>Loft Room Flooring</h3><p>Loft room finish with herringbone flooring, internal doors and skirting.</p></article>
-<article class="card"><img src="wood-floor.jpg" alt="Wood Floor Restoration"><h3>Wood Floor Restoration</h3><p>Sanded and finished natural wooden flooring with glossy protective finish.</p></article>
-<article class="card"><img src="kitchen-worktop.jpg" alt="Kitchen Worktops & Tiling"><h3>Kitchen Worktops & Tiling</h3><p>Kitchen units, timber worktops, patterned backsplash tiles and appliance installation.</p></article>
-<article class="card"><img src="decorating.jpg" alt="Painting, Decorating & Shelving"><h3>Painting, Decorating & Shelving</h3><p>Interior decorating with green built-in shelving and wallpaper finish.</p></article>
-<article class="card"><img src="tiling-progress.jpg" alt="Bathroom Tiling in Progress"><h3>Bathroom Tiling in Progress</h3><p>Wall tiling installation with levelling clips and marble-effect tiles.</p></article>
-  </div>
+  <div class="portfolio"></div>
 </section>
-
+<section id="team" class="section light">
+  <div class="title"><p class="eyebrow">Our Team</p><h2>Trusted Specialists</h2><p>Meet the people behind ReNova Studio.</p></div>
+  <div class="team-grid"></div>
+</section>
+<section id="testimonials" class="section dark">
+  <div class="title"><p class="eyebrow">Client Reviews</p><h2>What Clients Say</h2><p>Feedback from renovation and refurbishment projects.</p></div>
+  <div class="testimonial-grid"></div>
+</section>
 <section id="about" class="section light about">
-  <div>
-    <p class="eyebrow">About ReNova Studio</p>
-    <h2>Designed to Look Beautiful. Built to Last.</h2>
-    <p>We help homeowners and businesses transform their spaces with reliable renovation services, clean project management and a high-end finish. Every project is handled with attention to detail, from the first conversation to the final handover.</p>
-  </div>
-  <div class="points">
-    <article class="point"><strong>01</strong><h3>Clear Communication</h3><p>You stay informed through every stage of the project.</p></article>
-    <article class="point"><strong>02</strong><h3>Professional Finish</h3><p>We focus on neat, durable and visually refined results.</p></article>
-    <article class="point"><strong>03</strong><h3>Trusted Team</h3><p>Experienced trades for renovation, carpentry, plumbing and electrical works.</p></article>
-  </div>
+  <div><p class="eyebrow">About ReNova Studio</p><h2>Designed to Look Beautiful. Built to Last.</h2><p>We help homeowners and businesses transform their spaces with reliable renovation services, clean project management and a high-end finish. Every project is handled with attention to detail, from the first conversation to the final handover.</p></div>
+  <div class="points"><article class="point"><strong>01</strong><h3>Clear Communication</h3><p>You stay informed through every stage of the project.</p></article><article class="point"><strong>02</strong><h3>Professional Finish</h3><p>We focus on neat, durable and visually refined results.</p></article><article class="point"><strong>03</strong><h3>Trusted Team</h3><p>Experienced trades for renovation, carpentry, plumbing and electrical works.</p></article></div>
 </section>
-
 <section id="contact" class="section contact">
   <div class="contact-copy">
-    <p class="eyebrow">Get in Touch</p>
-    <h2>Request a Free Quote</h2>
-    <p>Ready to start your renovation project? Contact ReNova Studio and tell us what you would like to transform.</p>
-    <div class="lines">
-      <p><strong>Project Manager / WhatsApp:</strong> <a href="tel:+447842722366">+44 7842 722366</a></p>
-      <p><strong>Administrator:</strong> <a href="tel:+447432712358">+44 7432 712358</a></p>
-      <p><strong>Email:</strong> <a href="mailto:Renovastudio25@gmail.com">Renovastudio25@gmail.com</a></p>
-      <p><strong>Address:</strong> 60 Stokes Road, E6 3SB, London, United Kingdom</p>
-    </div>
+    <p class="eyebrow">Get in Touch</p><h2>Request a Free Quote</h2><p>Ready to start your renovation project? Contact ReNova Studio and tell us what you would like to transform.</p>
+    <div class="lines"><p><strong>Project Manager / WhatsApp:</strong> <a href="tel:+447842722366">+44 7842 722366</a></p><p><strong>Administrator:</strong> <a href="tel:+447432712358">+44 7432 712358</a></p><p><strong>Email:</strong> <a href="mailto:Renovastudio25@gmail.com">Renovastudio25@gmail.com</a></p><p><strong>Address:</strong> 60 Stokes Road, E6 3SB, London, United Kingdom</p></div>
   </div>
-  <form action="mailto:Renovastudio25@gmail.com" method="post" enctype="text/plain">
-    <input name="Name" placeholder="Your Name" required>
-    <input name="Phone" placeholder="Your Phone" required>
-    <input name="Email" type="email" placeholder="Your Email">
-    <select name="Service">
-      <option>Garden Room / Outdoor Project</option><option>Complete Renovation</option><option>Kitchen Renovation</option><option>Bathroom Renovation</option><option>Flooring</option><option>Tiling</option><option>Painting & Decorating</option><option>Carpentry & Joinery</option><option>Other</option>
-    </select>
-    <textarea name="Message" rows="5" placeholder="Tell us about your project" required></textarea>
-    <button class="btn gold" type="submit">Send Enquiry</button>
+  <form id="quoteForm">
+    <input name="name" placeholder="Your Name" required><input name="phone" placeholder="Your Phone" required><input name="email" type="email" placeholder="Your Email">
+    <select name="service"><option>Garden Room / Outdoor Project</option><option>Complete Renovation</option><option>Kitchen Renovation</option><option>Bathroom Renovation</option><option>Flooring</option><option>Tiling</option><option>Painting & Decorating</option><option>Carpentry & Joinery</option><option>Other</option></select>
+    <textarea name="message" rows="5" placeholder="Tell us about your project" required></textarea><button class="btn gold" type="submit">Send Enquiry</button><p class="form-status" id="formStatus"></p>
   </form>
 </section>
 </main>
-
 <footer>© 2025 ReNova Studio. All Rights Reserved.</footer>
-
+<div class="modal" id="projectModal"><div class="modal-box"><button class="close-modal" onclick="closeProjectModal()">×</button><div id="modalContent"></div></div></div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-import { getFirestore, doc, getDoc, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
+import { getFirestore, doc, getDoc, collection, getDocs, addDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyCfWJTOI9Nr6NfG0LRWgotc57rQlCcnWIw",
   authDomain: "renovastudio-af25a.firebaseapp.com",
@@ -242,129 +161,37 @@ const firebaseConfig = {
   messagingSenderId: "195402777911",
   appId: "1:195402777911:web:d7aab76283e235583606b2"
 };
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-const originalPortfolio = Array.from(document.querySelectorAll(".portfolio .card")).map(card => {
-  const img = card.querySelector("img");
-  return {
-    title: card.querySelector("h3")?.innerText || "",
-    description: card.querySelector("p")?.innerText || "",
-    imageUrl: img?.getAttribute("src") || "",
-    alt: img?.getAttribute("alt") || ""
-  };
-});
-
-function setText(selector, value){
-  if(value){
-    const el = document.querySelector(selector);
-    if(el) el.innerText = value;
-  }
-}
-
-function setLink(selector, value, prefix){
-  if(value){
-    const el = document.querySelector(selector);
-    if(el){
-      el.innerText = value;
-      el.href = prefix + value.replaceAll(" ","");
-    }
-  }
-}
-
-function setEmail(selector, value){
-  if(value){
-    const el = document.querySelector(selector);
-    if(el){
-      el.innerText = value;
-      el.href = "mailto:" + value;
-    }
-  }
-}
-
-function setHeroImage(url){
-  if(url){
-    const hero = document.querySelector(".hero");
-    if(hero){
-      hero.style.background =
-        "linear-gradient(90deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.74) 36%,rgba(0,0,0,.38) 72%,rgba(0,0,0,.2) 100%), url('" + url + "') center/cover no-repeat";
-    }
-  }
-}
-
-function renderPortfolio(projects){
-  const grid = document.querySelector(".portfolio");
-  if(!grid) return;
-  grid.innerHTML = "";
-  projects.forEach(p => {
-    grid.innerHTML += `
-      <article class="card">
-        <img src="${p.imageUrl}" alt="${p.alt || p.title}">
-        <h3>${p.title}</h3>
-        <p>${p.description || ""}</p>
-      </article>
-    `;
-  });
-}
-
-async function loadFromAdmin(){
-  try{
-    const snap = await getDoc(doc(db,"site","homepage"));
-    if(snap.exists()){
-      const d = snap.data();
-
-      setText(".hero .eyebrow", d.heroEyebrow);
-      setText(".hero h1", d.heroTitle || d.title);
-      setText(".hero .lead", d.heroText || d.text);
-
-      setText("#services .title h2", d.servicesTitle);
-      setText("#services .title p:last-child", d.servicesIntro);
-
-      setText("#portfolio .title h2", d.portfolioTitle);
-      setText("#portfolio .title p:last-child", d.portfolioIntro);
-
-      setText("#about h2", d.aboutTitle);
-      setText("#about > div:first-child > p:last-child", d.aboutText);
-
-      setText("#contact h2", d.contactTitle);
-      setText(".contact-copy > p:nth-of-type(2)", d.contactText);
-
-      setLink(".lines p:nth-child(1) a", d.managerPhone, "tel:");
-      setLink(".lines p:nth-child(2) a", d.adminPhone, "tel:");
-      setEmail(".lines p:nth-child(3) a", d.contactEmail);
-
-      if(d.address){
-        const addressLine = document.querySelector(".lines p:nth-child(4)");
-        if(addressLine) addressLine.innerHTML = "<strong>Address:</strong> " + d.address;
-      }
-
-      if(d.managerPhone){
-        const wa = document.querySelector(".whatsapp");
-        if(wa) wa.href = "https://wa.me/" + d.managerPhone.replace(/[^0-9]/g,"");
-      }
-
-      setHeroImage(d.heroImageUrl || d.imageUrl);
-    }
-
-    const q = query(collection(db,"projects"), orderBy("order","asc"));
-    const projectSnap = await getDocs(q);
-    const added = [];
-    projectSnap.forEach(doc => {
-      const p = doc.data();
-      if(p.title && p.imageUrl) added.push(p);
-    });
-
-    if(added.length){
-      renderPortfolio(added.concat(originalPortfolio));
-    }
-  }catch(error){
-    console.log("Admin content load failed:", error);
-  }
-}
-
+const app=initializeApp(firebaseConfig),db=getFirestore(app);
+let allProjects=[];
+const staticProjects=[
+ {title:"Garden Room & Outdoor BBQ Area",description:"Timber garden gazebo with covered seating, brick BBQ/fireplace and warm outdoor lighting.",imageUrl:"hero-garden.png",order:2},
+ {title:"Open Plan Kitchen Renovation",description:"Kitchen refurbishment with herringbone flooring, worktops, lighting and modern fitted units.",imageUrl:"open-plan-kitchen.jpg",order:3},
+ {title:"Compact Kitchen & Herringbone Flooring",description:"Grey kitchen units, bright ceiling lights and clean flooring finish.",imageUrl:"kitchen-grey.jpg",order:4},
+ {title:"Bathroom Renovation",description:"Shower enclosure, marble-style tiles, vanity unit, toilet and plumbing finish.",imageUrl:"bathroom.jpg",order:5},
+ {title:"Staircase & Feature Wall",description:"Wood staircase finish with vertical slat feature wall and carpentry detailing.",imageUrl:"staircase.jpg",order:6},
+ {title:"Loft Room Flooring",description:"Loft room finish with herringbone flooring, internal doors and skirting.",imageUrl:"loft-floor.jpg",order:7},
+ {title:"Wood Floor Restoration",description:"Sanded and finished natural wooden flooring with glossy protective finish.",imageUrl:"wood-floor.jpg",order:8},
+ {title:"Kitchen Worktops & Tiling",description:"Kitchen units, timber worktops, patterned backsplash tiles and appliance installation.",imageUrl:"kitchen-worktop.jpg",order:9},
+ {title:"Painting, Decorating & Shelving",description:"Interior decorating with green built-in shelving and wallpaper finish.",imageUrl:"decorating.jpg",order:10},
+ {title:"Bathroom Tiling in Progress",description:"Wall tiling installation with levelling clips and marble-effect tiles.",imageUrl:"tiling-progress.jpg",order:11}
+];
+function setText(s,v){if(v){const e=document.querySelector(s);if(e)e.innerText=v;}}
+function setLink(s,v,p){if(v){const e=document.querySelector(s);if(e){e.innerText=v;e.href=p+v.replaceAll(" ","");}}}
+function setEmail(s,v){if(v){const e=document.querySelector(s);if(e){e.innerText=v;e.href="mailto:"+v;}}}
+function setHeroImage(u){if(u){const h=document.querySelector(".hero");if(h)h.style.background="linear-gradient(90deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.74) 36%,rgba(0,0,0,.38) 72%,rgba(0,0,0,.2) 100%), url('"+u+"') center/cover no-repeat";}}
+function renderPortfolio(p){const g=document.querySelector(".portfolio");g.innerHTML="";p.forEach((x,i)=>{g.innerHTML+=`<article class="card" onclick="openProjectModal(${i})"><img src="${x.imageUrl}" alt="${x.title}"><h3>${x.title}</h3><p>${x.description||""}</p>${x.category?`<small>${x.category}</small>`:""}</article>`;});}
+function renderTeam(items){const g=document.querySelector(".team-grid");g.innerHTML="";items.forEach(t=>{g.innerHTML+=`<article class="team-card"><img src="${t.photoUrl}" alt="${t.name}"><h3>${t.name}</h3><p><strong>${t.position||""}</strong></p><p>${t.bio||""}</p></article>`;});}
+function renderTestimonials(items){const g=document.querySelector(".testimonial-grid");g.innerHTML="";items.forEach(t=>{g.innerHTML+=`<article class="testimonial-card"><p>“${t.text||""}”</p><h3>${t.name||""}</h3><p>${"★".repeat(Number(t.rating||5))}</p></article>`;});}
+function ytEmbed(url){const m=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/);return m?`https://www.youtube.com/embed/${m[1]}`:url;}
+window.openProjectModal=function(i){const p=allProjects[i];if(!p)return;const gallery=[p.imageUrl].concat(p.galleryUrls||[]).filter(Boolean);let html=`<h2>${p.title}</h2><p>${p.description||""}</p>${p.category?`<p><strong>Category:</strong> ${p.category}</p>`:""}<div class="gallery">${gallery.map(u=>`<img src="${u}" alt="">`).join("")}${(p.videoUrls||[]).map(u=>`<video controls src="${u}"></video>`).join("")}${(p.youtubeUrls||[]).map(u=>`<iframe src="${ytEmbed(u)}" frameborder="0" allowfullscreen></iframe>`).join("")}</div>`;if(p.beforeUrl||p.afterUrl)html+=`<div class="before-after">${p.beforeUrl?`<div class="ba-card"><span>Before</span><img src="${p.beforeUrl}"></div>`:""}${p.afterUrl?`<div class="ba-card"><span>After</span><img src="${p.afterUrl}"></div>`:""}</div>`;document.getElementById("modalContent").innerHTML=html;document.getElementById("projectModal").style.display="block";}
+window.closeProjectModal=()=>document.getElementById("projectModal").style.display="none";
+async function loadFromAdmin(){try{const s=await getDoc(doc(db,"site","homepage"));if(s.exists()){const d=s.data();setText(".hero .eyebrow",d.heroEyebrow);setText(".hero h1",d.heroTitle||d.title);setText(".hero .lead",d.heroText||d.text);setText("#services .title h2",d.servicesTitle);setText("#services .title p:last-child",d.servicesIntro);setText("#portfolio .title h2",d.portfolioTitle);setText("#portfolio .title p:last-child",d.portfolioIntro);setText("#about h2",d.aboutTitle);setText("#about > div:first-child > p:last-child",d.aboutText);setText("#contact h2",d.contactTitle);setText(".contact-copy > p:nth-of-type(2)",d.contactText);setLink(".lines p:nth-child(1) a",d.managerPhone,"tel:");setLink(".lines p:nth-child(2) a",d.adminPhone,"tel:");setEmail(".lines p:nth-child(3) a",d.contactEmail);if(d.address){const a=document.querySelector(".lines p:nth-child(4)");if(a)a.innerHTML="<strong>Address:</strong> "+d.address;}if(d.managerPhone){const wa=document.querySelector(".whatsapp");if(wa)wa.href="https://wa.me/"+d.managerPhone.replace(/[^0-9]/g,"");}setHeroImage(d.heroImageUrl||d.imageUrl);}
+const ps=await getDocs(query(collection(db,"projects"),orderBy("order","asc")));const dyn=[];ps.forEach(x=>{const p=x.data();if(p.title&&p.imageUrl&&p.deleted!==true)dyn.push(p);});allProjects=dyn.length?dyn:staticProjects;renderPortfolio(allProjects);
+const ts=await getDocs(query(collection(db,"team"),orderBy("order","asc")));const team=[];ts.forEach(x=>{const t=x.data();if(t.name&&t.photoUrl)team.push(t);});renderTeam(team);
+const rs=await getDocs(query(collection(db,"testimonials"),orderBy("order","asc")));const rev=[];rs.forEach(x=>{const r=x.data();if(r.name&&r.text)rev.push(r);});renderTestimonials(rev);
+}catch(e){console.log(e);allProjects=staticProjects;renderPortfolio(allProjects);}}
+document.getElementById("quoteForm").addEventListener("submit",async(e)=>{e.preventDefault();const f=e.target;try{await addDoc(collection(db,"quotes"),{name:f.name.value,phone:f.phone.value,email:f.email.value,service:f.service.value,message:f.message.value,createdAt:serverTimestamp(),status:"new"});document.getElementById("formStatus").innerText="Thank you. Your request has been sent.";f.reset();}catch(err){document.getElementById("formStatus").innerText="Send failed. Please contact us by WhatsApp.";console.log(err);}});
 loadFromAdmin();
 </script>
-
 </body>
 </html>
