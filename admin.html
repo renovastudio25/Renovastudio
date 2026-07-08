@@ -73,7 +73,9 @@ display:none;
 <input id="title" placeholder="Title">
 
 <textarea id="text" rows="6" placeholder="Description"></textarea>
-
+<input id="imageFile" type="file" accept="image/*">
+<img id="preview" style="width:100%;margin-top:10px;border-radius:8px;display:none;">
+<button onclick="uploadImage()">Upload Image</button>
 <button onclick="saveContent()">Save Content</button>
 
 <button onclick="logout()">Logout</button>
@@ -83,8 +85,9 @@ display:none;
 </div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyCfWJTOI9Nr6NfG0LRWgotc57rQlCcnWIw",
@@ -98,7 +101,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-
+const storage = getStorage(app);
 window.login = async function(){
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -125,7 +128,34 @@ window.saveContent = async function(){
 
   document.getElementById("saved").innerText = "Saved successfully.";
 };
+window.uploadImage = async function(){
+  const file = document.getElementById("imageFile").files[0];
 
+  if(!file){
+    document.getElementById("saved").innerText = "Choose an image first.";
+    return;
+  }
+
+  try{
+    document.getElementById("saved").innerText = "Uploading...";
+
+    const fileName = Date.now() + "-" + file.name;
+    const storageRef = ref(storage, "images/" + fileName);
+
+    await uploadBytes(storageRef, file);
+    const imageUrl = await getDownloadURL(storageRef);
+
+    await setDoc(doc(db,"site","homepage"),{
+      imageUrl:imageUrl
+    }, { merge:true });
+
+    document.getElementById("preview").src = imageUrl;
+    document.getElementById("preview").style.display = "block";
+    document.getElementById("saved").innerText = "Image uploaded successfully.";
+  }catch(error){
+    document.getElementById("saved").innerText = "Upload failed: " + error.message;
+  }
+};
 async function loadContent(){
   const snap = await getDoc(doc(db,"site","homepage"));
 
