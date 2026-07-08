@@ -15,6 +15,12 @@ input,textarea,select{width:100%;padding:12px;margin-top:6px;border:0;border-rad
 textarea{min-height:85px}
 button{width:100%;padding:13px;margin-top:14px;border:0;border-radius:7px;background:#d7aa42;font-weight:bold;cursor:pointer}
 button.dark{background:#444;color:#fff}
+button.danger{background:#b33131;color:#fff}
+button.smallbtn{padding:9px;margin-top:8px;font-size:13px}
+.project-item{background:#111;border:1px solid rgba(215,170,66,.35);border-radius:10px;padding:12px;margin:12px 0}
+.project-item img{width:100%;max-height:190px;object-fit:cover;border-radius:8px;margin-bottom:10px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:650px){.row{grid-template-columns:1fr}}
 .hidden{display:none}
 .msg{color:#d7aa42;font-weight:bold;text-align:center}
 .preview{width:100%;max-height:260px;object-fit:cover;border-radius:10px;margin-top:10px;display:none}
@@ -68,10 +74,18 @@ button.dark{background:#444;color:#fff}
     <input id="projectTitle">
     <label>New project description</label>
     <textarea id="projectDescription"></textarea>
+    <label>Project order number</label>
+    <input id="projectOrder" type="number" placeholder="1">
     <label>New project image</label>
     <input id="projectFile" type="file" accept="image/*">
     <img id="projectPreview" class="preview">
     <button onclick="uploadProject()">Upload New Project</button>
+  </div>
+
+  <div class="box">
+    <h2>Manage Existing Projects</h2>
+    <p class="small">Edit, delete, replace image, or change order. Lower order number appears first.</p>
+    <div id="projectList"></div>
   </div>
 
   <div class="box">
@@ -109,7 +123,7 @@ button.dark{background:#444;color:#fff}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, updateDoc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
 
 const firebaseConfig = {
@@ -166,18 +180,26 @@ window.uploadHeroImage = async function(){
 
 window.uploadProject = async function(){
   try{
+    const title = $("projectTitle").value.trim();
+    if(!title) throw new Error("Project title is required.");
     status("Uploading project...");
     const imageUrl = await uploadFile("projectFile", "projectPreview", "projects");
     await addDoc(collection(db,"projects"), {
-      title:$("projectTitle").value,
-      description:$("projectDescription").value,
+      title:title,
+      description:$("projectDescription").value.trim(),
       imageUrl:imageUrl,
-      createdAt:serverTimestamp()
+      order:Number($("projectOrder").value || Date.now()),
+      deleted:false,
+      createdAt:serverTimestamp(),
+      updatedAt:new Date().toISOString()
     });
     $("projectTitle").value = "";
     $("projectDescription").value = "";
+    $("projectOrder").value = "";
     $("projectFile").value = "";
+    $("projectPreview").style.display = "none";
     status("Project uploaded.");
+    await loadProjects();
   }catch(error){ status("Upload failed: " + error.message); }
 };
 
@@ -234,11 +256,89 @@ async function loadSettings(){
   }
 }
 
+function esc(value){
+  return String(value || "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+}
+
+window.saveProject = async function(id){
+  try{
+    await updateDoc(doc(db,"projects",id), {
+      title:$("title-"+id).value,
+      description:$("desc-"+id).value,
+      order:Number($("order-"+id).value || 9999),
+      updatedAt:new Date().toISOString()
+    });
+    status("Project saved.");
+    await loadProjects();
+  }catch(error){ status("Project save failed: " + error.message); }
+};
+
+window.deleteProject = async function(id){
+  if(!confirm("Delete this project?")) return;
+  try{
+    await deleteDoc(doc(db,"projects",id));
+    status("Project deleted.");
+    await loadProjects();
+  }catch(error){ status("Delete failed: " + error.message); }
+};
+
+window.replaceProjectImage = async function(id){
+  try{
+    const file = $("file-"+id).files[0];
+    if(!file) throw new Error("Choose a new image first.");
+    const safeName = file.name.replaceAll(" ","-").toLowerCase();
+    const storageRef = ref(storage, "projects/" + Date.now() + "-" + safeName);
+    await uploadBytes(storageRef, file);
+    const imageUrl = await getDownloadURL(storageRef);
+    await updateDoc(doc(db,"projects",id), { imageUrl:imageUrl, updatedAt:new Date().toISOString() });
+    status("Project image replaced.");
+    await loadProjects();
+  }catch(error){ status("Image replace failed: " + error.message); }
+};
+
+async function loadProjects(){
+  const list = $("projectList");
+  if(!list) return;
+  list.innerHTML = "Loading projects...";
+  try{
+    const q = query(collection(db,"projects"), orderBy("order","asc"));
+    const snap = await getDocs(q);
+    let html = "";
+    snap.forEach(projectDoc => {
+      const p = projectDoc.data();
+      if(p.deleted === true) return;
+      const id = projectDoc.id;
+      html += `
+        <div class="project-item">
+          ${p.imageUrl ? `<img src="${p.imageUrl}" alt="">` : ""}
+          <label>Title</label>
+          <input id="title-${id}" value="${esc(p.title)}">
+          <label>Description</label>
+          <textarea id="desc-${id}">${esc(p.description)}</textarea>
+          <label>Order</label>
+          <input id="order-${id}" type="number" value="${p.order || 9999}">
+          <div class="row">
+            <button class="smallbtn" onclick="saveProject('${id}')">Save Project</button>
+            <button class="smallbtn danger" onclick="deleteProject('${id}')">Delete Project</button>
+          </div>
+          <label>Replace image</label>
+          <input id="file-${id}" type="file" accept="image/*">
+          <button class="smallbtn dark" onclick="replaceProjectImage('${id}')">Replace Image</button>
+        </div>
+      `;
+    });
+    list.innerHTML = html || "<p>No dynamic projects yet.</p>";
+  }catch(error){
+    list.innerHTML = "<p>Projects load failed: " + error.message + "</p>";
+  }
+}
+
 onAuthStateChanged(auth, async (user) => {
   if(user){
     $("loginBox").classList.add("hidden");
     $("adminBox").classList.remove("hidden");
     await loadSettings();
+    await loadProjects();
   }else{
     $("loginBox").classList.remove("hidden");
     $("adminBox").classList.add("hidden");
