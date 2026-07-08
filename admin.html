@@ -1,131 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>ReNova Studio Admin</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#111;color:#fff;font-family:Arial,sans-serif;padding:18px}
-.wrap{max-width:900px;margin:auto}
-.box{background:#222;padding:22px;border-radius:14px;margin:14px 0}
-h1,h2{margin-top:0;text-align:center}
-label{display:block;margin-top:12px;font-weight:bold}
-input,textarea,select{width:100%;padding:12px;margin-top:6px;border:0;border-radius:7px;font-size:15px}
-textarea{min-height:85px}
-button{width:100%;padding:13px;margin-top:14px;border:0;border-radius:7px;background:#d7aa42;font-weight:bold;cursor:pointer}
-button.dark{background:#444;color:#fff}
-button.danger{background:#b33131;color:#fff}
-button.smallbtn{padding:9px;margin-top:8px;font-size:13px}
-.project-item{background:#111;border:1px solid rgba(215,170,66,.35);border-radius:10px;padding:12px;margin:12px 0}
-.project-item img{width:100%;max-height:190px;object-fit:cover;border-radius:8px;margin-bottom:10px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:650px){.row{grid-template-columns:1fr}}
-.hidden{display:none}
-.msg{color:#d7aa42;font-weight:bold;text-align:center}
-.preview{width:100%;max-height:260px;object-fit:cover;border-radius:10px;margin-top:10px;display:none}
-.small{color:#bbb;font-size:13px}
-</style>
-</head>
-<body>
-<div class="wrap">
-
-<div class="box" id="loginBox">
-  <h1>ReNova Studio Admin</h1>
-  <label>Email</label>
-  <input id="email" type="email" placeholder="Email">
-  <label>Password</label>
-  <input id="password" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
-  <p id="loginMsg" class="msg"></p>
-</div>
-
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>ReNova Studio Admin v3.0</title><style>
+*{box-sizing:border-box}body{margin:0;background:#111;color:#fff;font-family:Arial,sans-serif;padding:18px}.wrap{max-width:1050px;margin:auto}.box{background:#222;padding:22px;border-radius:14px;margin:14px 0}h1,h2{text-align:center;margin-top:0}label{display:block;margin-top:12px;font-weight:bold}input,textarea,select{width:100%;padding:12px;margin-top:6px;border:0;border-radius:7px;font-size:15px}textarea{min-height:85px}button{width:100%;padding:13px;margin-top:12px;border:0;border-radius:7px;background:#d7aa42;font-weight:bold;cursor:pointer}button.dark{background:#444;color:#fff}button.danger{background:#b33131;color:#fff}button.small{padding:9px;margin:5px 0;font-size:13px}.hidden{display:none}.msg{color:#d7aa42;font-weight:bold;text-align:center}.preview{width:100%;max-height:260px;object-fit:cover;border-radius:10px;margin-top:10px;display:none}.item{background:#111;border:1px solid rgba(215,170,66,.35);border-radius:10px;padding:12px;margin:12px 0}.item img{width:100%;max-height:190px;object-fit:cover;border-radius:8px;margin-bottom:10px}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.small-note{color:#bbb;font-size:13px}.gallery-small{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.gallery-small img,.gallery-small video{height:80px;width:100%;object-fit:cover}@media(max-width:650px){.row{grid-template-columns:1fr}}
+</style></head>
+<body><div class="wrap">
+<div class="box" id="loginBox"><h1>ReNova Studio Admin</h1><label>Email</label><input id="email" type="email"><label>Password</label><input id="password" type="password"><button onclick="login()">Login</button><p id="loginMsg" class="msg"></p></div>
 <div id="adminBox" class="hidden">
-  <div class="box">
-    <h2>Hero</h2>
-    <label>Small hero text</label>
-    <input id="heroEyebrow" placeholder="Premium Renovation Specialists in London">
-    <label>Hero title</label>
-    <input id="heroTitle" placeholder="Renovate. Transform. Enjoy.">
-    <label>Hero description</label>
-    <textarea id="heroText"></textarea>
-    <label>Hero image</label>
-    <input id="heroFile" type="file" accept="image/*">
-    <img id="heroPreview" class="preview">
-    <button onclick="uploadHeroImage()">Upload Hero Image</button>
-  </div>
-
-  <div class="box">
-    <h2>Services Section</h2>
-    <label>Services title</label>
-    <input id="servicesTitle" placeholder="Our Services">
-    <label>Services intro</label>
-    <textarea id="servicesIntro"></textarea>
-    <p class="small">Service cards are kept from the original design.</p>
-  </div>
-
-  <div class="box">
-    <h2>Portfolio Section</h2>
-    <label>Portfolio title</label>
-    <input id="portfolioTitle" placeholder="Our Recent Work">
-    <label>Portfolio intro</label>
-    <textarea id="portfolioIntro"></textarea>
-    <label>New project title</label>
-    <input id="projectTitle">
-    <label>New project description</label>
-    <textarea id="projectDescription"></textarea>
-    <label>Project order number</label>
-    <input id="projectOrder" type="number" placeholder="1">
-    <label>New project image</label>
-    <input id="projectFile" type="file" accept="image/*">
-    <img id="projectPreview" class="preview">
-    <button onclick="uploadProject()">Upload New Project</button>
-  </div>
-
-  <div class="box">
-    <h2>Manage Existing Projects</h2>
-    <p class="small">Edit, delete, replace image, or change order. Lower order number appears first.</p>
-    <div id="projectList"></div>
-  </div>
-
-  <div class="box">
-    <h2>About</h2>
-    <label>About title</label>
-    <input id="aboutTitle">
-    <label>About text</label>
-    <textarea id="aboutText"></textarea>
-  </div>
-
-  <div class="box">
-    <h2>Contact</h2>
-    <label>Contact title</label>
-    <input id="contactTitle">
-    <label>Contact text</label>
-    <textarea id="contactText"></textarea>
-    <label>Project Manager / WhatsApp</label>
-    <input id="managerPhone">
-    <label>Administrator phone</label>
-    <input id="adminPhone">
-    <label>Email</label>
-    <input id="contactEmail">
-    <label>Address</label>
-    <input id="address">
-  </div>
-
-  <div class="box">
-    <button onclick="saveAll()">Save All Text</button>
-    <button class="dark" onclick="logout()">Logout</button>
-    <p id="status" class="msg"></p>
-  </div>
-</div>
-</div>
-
+<div class="box"><h2>Dashboard</h2><p id="dashboardStats" class="msg">Loading...</p></div>
+<div class="box"><h2>Hero</h2><label>Small hero text</label><input id="heroEyebrow"><label>Hero title</label><input id="heroTitle"><label>Hero description</label><textarea id="heroText"></textarea><label>Hero image</label><input id="heroFile" type="file" accept="image/*"><img id="heroPreview" class="preview"><button onclick="uploadHeroImage()">Upload Hero Image</button></div>
+<div class="box"><h2>Services</h2><label>Services title</label><input id="servicesTitle"><label>Services intro</label><textarea id="servicesIntro"></textarea></div>
+<div class="box"><h2>Portfolio</h2><label>Portfolio title</label><input id="portfolioTitle"><label>Portfolio intro</label><textarea id="portfolioIntro"></textarea><h3>Add New Project</h3><label>Title</label><input id="projectTitle"><label>Description</label><textarea id="projectDescription"></textarea><label>Category</label><select id="projectCategory"><option>Bathroom</option><option>Kitchen</option><option>Garden Room</option><option>Flooring</option><option>Carpentry</option><option>Decorating</option><option>Other</option></select><label>Order number</label><input id="projectOrder" type="number" placeholder="1"><label>Main image</label><input id="projectFile" type="file" accept="image/*"><img id="projectPreview" class="preview"><button onclick="uploadProject()">Upload New Project</button></div>
+<div class="box"><h2>Manage Projects</h2><p class="small-note">Edit, delete, replace image, add gallery, before/after and videos.</p><div id="projectList"></div></div>
+<div class="box"><h2>Team</h2><label>Name</label><input id="teamName"><label>Position</label><input id="teamPosition"><label>Bio</label><textarea id="teamBio"></textarea><label>Order</label><input id="teamOrder" type="number"><label>Photo</label><input id="teamFile" type="file" accept="image/*"><button onclick="addTeam()">Add Team Member</button><div id="teamList"></div></div>
+<div class="box"><h2>Testimonials</h2><label>Client name</label><input id="reviewName"><label>Review text</label><textarea id="reviewText"></textarea><label>Rating 1-5</label><input id="reviewRating" type="number" value="5"><label>Order</label><input id="reviewOrder" type="number"><button onclick="addReview()">Add Review</button><div id="reviewList"></div></div>
+<div class="box"><h2>Quote Requests</h2><button onclick="loadQuotes()">Refresh Requests</button><div id="quoteList"></div></div>
+<div class="box"><h2>About</h2><label>About title</label><input id="aboutTitle"><label>About text</label><textarea id="aboutText"></textarea></div>
+<div class="box"><h2>Contact</h2><label>Contact title</label><input id="contactTitle"><label>Contact text</label><textarea id="contactText"></textarea><label>Project Manager / WhatsApp</label><input id="managerPhone"><label>Administrator phone</label><input id="adminPhone"><label>Email</label><input id="contactEmail"><label>Address</label><input id="address"></div>
+<div class="box"><button onclick="saveAll()">Save All Text</button><button class="dark" onclick="logout()">Logout</button><p id="status" class="msg"></p></div>
+</div></div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, updateDoc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyCfWJTOI9Nr6NfG0LRWgotc57rQlCcnWIw",
   authDomain: "renovastudio-af25a.firebaseapp.com",
@@ -134,216 +31,33 @@ const firebaseConfig = {
   messagingSenderId: "195402777911",
   appId: "1:195402777911:web:d7aab76283e235583606b2"
 };
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
-
-const $ = (id) => document.getElementById(id);
-const status = (text) => $("status").innerText = text;
-
-window.login = async function(){
-  try{
-    await signInWithEmailAndPassword(auth, $("email").value.trim(), $("password").value);
-    $("loginMsg").innerText = "";
-  }catch(error){
-    $("loginMsg").innerText = "Login failed: " + error.message;
-  }
-};
-
-window.logout = async function(){
-  await signOut(auth);
-};
-
-async function uploadFile(inputId, previewId, folder){
-  const file = $(inputId).files[0];
-  if(!file) throw new Error("Choose an image first.");
-  const safeName = file.name.replaceAll(" ","-").toLowerCase();
-  const path = folder + "/" + Date.now() + "-" + safeName;
-  const storageRef = ref(storage, path);
-  await uploadBytes(storageRef, file);
-  const url = await getDownloadURL(storageRef);
-  $(previewId).src = url;
-  $(previewId).style.display = "block";
-  return url;
-}
-
-window.uploadHeroImage = async function(){
-  try{
-    status("Uploading hero image...");
-    const imageUrl = await uploadFile("heroFile", "heroPreview", "hero");
-    await setDoc(doc(db,"site","homepage"), { heroImageUrl:imageUrl, imageUrl:imageUrl }, { merge:true });
-    status("Hero image uploaded.");
-  }catch(error){ status("Upload failed: " + error.message); }
-};
-
-window.uploadProject = async function(){
-  try{
-    const title = $("projectTitle").value.trim();
-    if(!title) throw new Error("Project title is required.");
-    status("Uploading project...");
-    const imageUrl = await uploadFile("projectFile", "projectPreview", "projects");
-    await addDoc(collection(db,"projects"), {
-      title:title,
-      description:$("projectDescription").value.trim(),
-      imageUrl:imageUrl,
-      order:Number($("projectOrder").value || Date.now()),
-      deleted:false,
-      createdAt:serverTimestamp(),
-      updatedAt:new Date().toISOString()
-    });
-    $("projectTitle").value = "";
-    $("projectDescription").value = "";
-    $("projectOrder").value = "";
-    $("projectFile").value = "";
-    $("projectPreview").style.display = "none";
-    status("Project uploaded.");
-    await loadProjects();
-  }catch(error){ status("Upload failed: " + error.message); }
-};
-
-window.saveAll = async function(){
-  try{
-    await setDoc(doc(db,"site","homepage"), {
-      heroEyebrow:$("heroEyebrow").value,
-      heroTitle:$("heroTitle").value,
-      title:$("heroTitle").value,
-      heroText:$("heroText").value,
-      text:$("heroText").value,
-      servicesTitle:$("servicesTitle").value,
-      servicesIntro:$("servicesIntro").value,
-      portfolioTitle:$("portfolioTitle").value,
-      portfolioIntro:$("portfolioIntro").value,
-      aboutTitle:$("aboutTitle").value,
-      aboutText:$("aboutText").value,
-      contactTitle:$("contactTitle").value,
-      contactText:$("contactText").value,
-      managerPhone:$("managerPhone").value,
-      adminPhone:$("adminPhone").value,
-      contactEmail:$("contactEmail").value,
-      address:$("address").value,
-      updatedAt:new Date().toISOString()
-    }, { merge:true });
-    status("Saved successfully.");
-  }catch(error){ status("Save failed: " + error.message); }
-};
-
-async function loadSettings(){
-  const snap = await getDoc(doc(db,"site","homepage"));
-  if(!snap.exists()) return;
-  const d = snap.data();
-
-  $("heroEyebrow").value = d.heroEyebrow || "Premium Renovation Specialists in London";
-  $("heroTitle").value = d.heroTitle || d.title || "Renovate. Transform. Enjoy.";
-  $("heroText").value = d.heroText || d.text || "";
-  $("servicesTitle").value = d.servicesTitle || "Our Services";
-  $("servicesIntro").value = d.servicesIntro || "";
-  $("portfolioTitle").value = d.portfolioTitle || "Our Recent Work";
-  $("portfolioIntro").value = d.portfolioIntro || "";
-  $("aboutTitle").value = d.aboutTitle || "";
-  $("aboutText").value = d.aboutText || "";
-  $("contactTitle").value = d.contactTitle || "Request a Free Quote";
-  $("contactText").value = d.contactText || "";
-  $("managerPhone").value = d.managerPhone || "";
-  $("adminPhone").value = d.adminPhone || "";
-  $("contactEmail").value = d.contactEmail || "";
-  $("address").value = d.address || "";
-
-  if(d.heroImageUrl || d.imageUrl){
-    $("heroPreview").src = d.heroImageUrl || d.imageUrl;
-    $("heroPreview").style.display = "block";
-  }
-}
-
-function esc(value){
-  return String(value || "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
-}
-
-window.saveProject = async function(id){
-  try{
-    await updateDoc(doc(db,"projects",id), {
-      title:$("title-"+id).value,
-      description:$("desc-"+id).value,
-      order:Number($("order-"+id).value || 9999),
-      updatedAt:new Date().toISOString()
-    });
-    status("Project saved.");
-    await loadProjects();
-  }catch(error){ status("Project save failed: " + error.message); }
-};
-
-window.deleteProject = async function(id){
-  if(!confirm("Delete this project?")) return;
-  try{
-    await deleteDoc(doc(db,"projects",id));
-    status("Project deleted.");
-    await loadProjects();
-  }catch(error){ status("Delete failed: " + error.message); }
-};
-
-window.replaceProjectImage = async function(id){
-  try{
-    const file = $("file-"+id).files[0];
-    if(!file) throw new Error("Choose a new image first.");
-    const safeName = file.name.replaceAll(" ","-").toLowerCase();
-    const storageRef = ref(storage, "projects/" + Date.now() + "-" + safeName);
-    await uploadBytes(storageRef, file);
-    const imageUrl = await getDownloadURL(storageRef);
-    await updateDoc(doc(db,"projects",id), { imageUrl:imageUrl, updatedAt:new Date().toISOString() });
-    status("Project image replaced.");
-    await loadProjects();
-  }catch(error){ status("Image replace failed: " + error.message); }
-};
-
-async function loadProjects(){
-  const list = $("projectList");
-  if(!list) return;
-  list.innerHTML = "Loading projects...";
-  try{
-    const q = query(collection(db,"projects"), orderBy("order","asc"));
-    const snap = await getDocs(q);
-    let html = "";
-    snap.forEach(projectDoc => {
-      const p = projectDoc.data();
-      if(p.deleted === true) return;
-      const id = projectDoc.id;
-      html += `
-        <div class="project-item">
-          ${p.imageUrl ? `<img src="${p.imageUrl}" alt="">` : ""}
-          <label>Title</label>
-          <input id="title-${id}" value="${esc(p.title)}">
-          <label>Description</label>
-          <textarea id="desc-${id}">${esc(p.description)}</textarea>
-          <label>Order</label>
-          <input id="order-${id}" type="number" value="${p.order || 9999}">
-          <div class="row">
-            <button class="smallbtn" onclick="saveProject('${id}')">Save Project</button>
-            <button class="smallbtn danger" onclick="deleteProject('${id}')">Delete Project</button>
-          </div>
-          <label>Replace image</label>
-          <input id="file-${id}" type="file" accept="image/*">
-          <button class="smallbtn dark" onclick="replaceProjectImage('${id}')">Replace Image</button>
-        </div>
-      `;
-    });
-    list.innerHTML = html || "<p>No dynamic projects yet.</p>";
-  }catch(error){
-    list.innerHTML = "<p>Projects load failed: " + error.message + "</p>";
-  }
-}
-
-onAuthStateChanged(auth, async (user) => {
-  if(user){
-    $("loginBox").classList.add("hidden");
-    $("adminBox").classList.remove("hidden");
-    await loadSettings();
-    await loadProjects();
-  }else{
-    $("loginBox").classList.remove("hidden");
-    $("adminBox").classList.add("hidden");
-  }
-});
-</script>
-</body>
-</html>
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),storage=getStorage(app);
+const $=id=>document.getElementById(id); const status=t=>$("status").innerText=t;
+window.login=async()=>{try{await signInWithEmailAndPassword(auth,$("email").value.trim(),$("password").value);$("loginMsg").innerText=""}catch(e){$("loginMsg").innerText="Login failed: "+e.message}};
+window.logout=async()=>signOut(auth);
+async function upload(inputId,folder,previewId=null){const file=$(inputId).files[0];if(!file)throw new Error("Choose file first.");const safe=file.name.replaceAll(" ","-").toLowerCase();const r=ref(storage,folder+"/"+Date.now()+"-"+safe);await uploadBytes(r,file);const url=await getDownloadURL(r);if(previewId){$(previewId).src=url;$(previewId).style.display="block";}return url;}
+window.uploadHeroImage=async()=>{try{const u=await upload("heroFile","hero","heroPreview");await setDoc(doc(db,"site","homepage"),{heroImageUrl:u,imageUrl:u},{merge:true});status("Hero uploaded.")}catch(e){status("Upload failed: "+e.message)}};
+window.uploadProject=async()=>{try{const title=$("projectTitle").value.trim();if(!title)throw new Error("Project title is required.");const imageUrl=await upload("projectFile","projects","projectPreview");await addDoc(collection(db,"projects"),{title,description:$("projectDescription").value,category:$("projectCategory").value,order:Number($("projectOrder").value||9999),imageUrl,galleryUrls:[],videoUrls:[],youtubeUrls:[],deleted:false,createdAt:serverTimestamp(),updatedAt:new Date().toISOString()});status("Project uploaded.");["projectTitle","projectDescription","projectOrder","projectFile"].forEach(id=>$(id).value="");$("projectPreview").style.display="none";await refreshAll();}catch(e){status("Upload failed: "+e.message)}};
+window.saveAll=async()=>{try{await setDoc(doc(db,"site","homepage"),{heroEyebrow:$("heroEyebrow").value,heroTitle:$("heroTitle").value,title:$("heroTitle").value,heroText:$("heroText").value,text:$("heroText").value,servicesTitle:$("servicesTitle").value,servicesIntro:$("servicesIntro").value,portfolioTitle:$("portfolioTitle").value,portfolioIntro:$("portfolioIntro").value,aboutTitle:$("aboutTitle").value,aboutText:$("aboutText").value,contactTitle:$("contactTitle").value,contactText:$("contactText").value,managerPhone:$("managerPhone").value,adminPhone:$("adminPhone").value,contactEmail:$("contactEmail").value,address:$("address").value,updatedAt:new Date().toISOString()},{merge:true});status("Saved successfully.")}catch(e){status("Save failed: "+e.message)}};
+async function loadSettings(){const s=await getDoc(doc(db,"site","homepage"));if(!s.exists())return;const d=s.data();$("heroEyebrow").value=d.heroEyebrow||"Premium Renovation Specialists in London";$("heroTitle").value=d.heroTitle||d.title||"Renovate. Transform. Enjoy.";$("heroText").value=d.heroText||d.text||"";$("servicesTitle").value=d.servicesTitle||"Our Services";$("servicesIntro").value=d.servicesIntro||"";$("portfolioTitle").value=d.portfolioTitle||"Our Recent Work";$("portfolioIntro").value=d.portfolioIntro||"";$("aboutTitle").value=d.aboutTitle||"";$("aboutText").value=d.aboutText||"";$("contactTitle").value=d.contactTitle||"Request a Free Quote";$("contactText").value=d.contactText||"";$("managerPhone").value=d.managerPhone||"";$("adminPhone").value=d.adminPhone||"";$("contactEmail").value=d.contactEmail||"";$("address").value=d.address||"";if(d.heroImageUrl||d.imageUrl){$("heroPreview").src=d.heroImageUrl||d.imageUrl;$("heroPreview").style.display="block";}}
+window.saveProject=async(id)=>{await updateDoc(doc(db,"projects",id),{title:$("title-"+id).value,description:$("desc-"+id).value,category:$("cat-"+id).value,order:Number($("order-"+id).value||9999),updatedAt:new Date().toISOString()});status("Project saved.");await loadProjects();};
+window.deleteProject=async(id)=>{if(!confirm("Delete this project?"))return;await deleteDoc(doc(db,"projects",id));status("Project deleted.");await refreshAll();};
+window.replaceProjectImage=async(id)=>{const u=await upload("file-"+id,"projects");await updateDoc(doc(db,"projects",id),{imageUrl:u,updatedAt:new Date().toISOString()});status("Image replaced.");await loadProjects();};
+window.addGalleryImage=async(id)=>{const u=await upload("gallery-"+id,"project-gallery");const p=(await getDoc(doc(db,"projects",id))).data();const a=p.galleryUrls||[];a.push(u);await updateDoc(doc(db,"projects",id),{galleryUrls:a,updatedAt:new Date().toISOString()});status("Gallery image added.");await loadProjects();};
+window.addProjectVideo=async(id)=>{const u=await upload("video-"+id,"project-videos");const p=(await getDoc(doc(db,"projects",id))).data();const a=p.videoUrls||[];a.push(u);await updateDoc(doc(db,"projects",id),{videoUrls:a,updatedAt:new Date().toISOString()});status("Video added.");await loadProjects();};
+window.addYouTube=async(id)=>{const val=$("youtube-"+id).value.trim();if(!val)return;const p=(await getDoc(doc(db,"projects",id))).data();const a=p.youtubeUrls||[];a.push(val);await updateDoc(doc(db,"projects",id),{youtubeUrls:a,updatedAt:new Date().toISOString()});status("YouTube link added.");await loadProjects();};
+window.setBeforeAfter=async(id,type)=>{const u=await upload(type+"-"+id,"before-after");await updateDoc(doc(db,"projects",id),{[type+"Url"]:u,updatedAt:new Date().toISOString()});status(type+" image saved.");await loadProjects();};
+async function loadProjects(){const list=$("projectList");list.innerHTML="Loading...";const s=await getDocs(query(collection(db,"projects"),orderBy("order","asc")));let html="";s.forEach(d=>{const p=d.data();if(p.deleted)return;const id=d.id;html+=`<div class="item">${p.imageUrl?`<img src="${p.imageUrl}">`:""}<label>Title</label><input id="title-${id}" value="${(p.title||"").replaceAll('"',"&quot;")}"><label>Description</label><textarea id="desc-${id}">${p.description||""}</textarea><label>Category</label><input id="cat-${id}" value="${p.category||""}"><label>Order</label><input id="order-${id}" type="number" value="${p.order||9999}"><div class="row"><button class="small" onclick="saveProject('${id}')">Save Project</button><button class="small danger" onclick="deleteProject('${id}')">Delete Project</button></div><label>Replace main image</label><input id="file-${id}" type="file" accept="image/*"><button class="small dark" onclick="replaceProjectImage('${id}')">Replace Image</button><label>Add gallery image</label><input id="gallery-${id}" type="file" accept="image/*"><button class="small dark" onclick="addGalleryImage('${id}')">Add Gallery Image</button><div class="gallery-small">${(p.galleryUrls||[]).map(u=>`<img src="${u}">`).join("")}</div><label>Upload video file</label><input id="video-${id}" type="file" accept="video/*"><button class="small dark" onclick="addProjectVideo('${id}')">Add Video</button><label>YouTube link</label><input id="youtube-${id}" placeholder="https://youtube.com/watch?v=..."><button class="small dark" onclick="addYouTube('${id}')">Add YouTube Link</button><label>Before image</label><input id="before-${id}" type="file" accept="image/*"><button class="small dark" onclick="setBeforeAfter('${id}','before')">Save Before</button><label>After image</label><input id="after-${id}" type="file" accept="image/*"><button class="small dark" onclick="setBeforeAfter('${id}','after')">Save After</button></div>`;});list.innerHTML=html||"<p>No dynamic projects yet.</p>";}
+window.addTeam=async()=>{try{const photoUrl=await upload("teamFile","team");await addDoc(collection(db,"team"),{name:$("teamName").value,position:$("teamPosition").value,bio:$("teamBio").value,order:Number($("teamOrder").value||9999),photoUrl,createdAt:serverTimestamp()});status("Team member added.");await refreshAll();}catch(e){status("Team upload failed: "+e.message)}};
+window.deleteTeam=async(id)=>{await deleteDoc(doc(db,"team",id));await loadTeam();};
+async function loadTeam(){const list=$("teamList");const s=await getDocs(query(collection(db,"team"),orderBy("order","asc")));let html="";s.forEach(d=>{const t=d.data();html+=`<div class="item">${t.photoUrl?`<img src="${t.photoUrl}">`:""}<strong>${t.name||""}</strong><p>${t.position||""}</p><p>${t.bio||""}</p><button class="small danger" onclick="deleteTeam('${d.id}')">Delete Team Member</button></div>`;});list.innerHTML=html;}
+window.addReview=async()=>{await addDoc(collection(db,"testimonials"),{name:$("reviewName").value,text:$("reviewText").value,rating:Number($("reviewRating").value||5),order:Number($("reviewOrder").value||9999),createdAt:serverTimestamp()});status("Review added.");await refreshAll();};
+window.deleteReview=async(id)=>{await deleteDoc(doc(db,"testimonials",id));await loadReviews();};
+async function loadReviews(){const list=$("reviewList");const s=await getDocs(query(collection(db,"testimonials"),orderBy("order","asc")));let html="";s.forEach(d=>{const r=d.data();html+=`<div class="item"><strong>${r.name||""}</strong><p>${r.text||""}</p><p>${"★".repeat(Number(r.rating||5))}</p><button class="small danger" onclick="deleteReview('${d.id}')">Delete Review</button></div>`;});list.innerHTML=html;}
+window.loadQuotes=async()=>{const list=$("quoteList");list.innerHTML="Loading...";const s=await getDocs(query(collection(db,"quotes"),orderBy("createdAt","desc")));let html="";s.forEach(d=>{const q=d.data();html+=`<div class="item"><strong>${q.name||""}</strong><p>Phone: ${q.phone||""}</p><p>Email: ${q.email||""}</p><p>Service: ${q.service||""}</p><p>${q.message||""}</p><p>Status: ${q.status||"new"}</p><button class="small" onclick="markQuote('${d.id}','done')">Mark Done</button><button class="small danger" onclick="deleteQuote('${d.id}')">Delete Request</button></div>`;});list.innerHTML=html||"<p>No quote requests yet.</p>";};
+window.markQuote=async(id,status)=>{await updateDoc(doc(db,"quotes",id),{status});await loadQuotes();};
+window.deleteQuote=async(id)=>{if(!confirm("Delete request?"))return;await deleteDoc(doc(db,"quotes",id));await loadQuotes();};
+async function dashboard(){const p=await getDocs(collection(db,"projects"));const t=await getDocs(collection(db,"team"));const r=await getDocs(collection(db,"testimonials"));const q=await getDocs(collection(db,"quotes"));$("dashboardStats").innerText=`Projects: ${p.size} | Team: ${t.size} | Reviews: ${r.size} | Quote Requests: ${q.size}`;}
+async function refreshAll(){await dashboard();await loadProjects();await loadTeam();await loadReviews();await loadQuotes();}
+onAuthStateChanged(auth,async u=>{if(u){$("loginBox").classList.add("hidden");$("adminBox").classList.remove("hidden");await loadSettings();await refreshAll();}else{$("loginBox").classList.remove("hidden");$("adminBox").classList.add("hidden");}});
+</script></body></html>
